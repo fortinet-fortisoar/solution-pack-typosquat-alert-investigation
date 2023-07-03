@@ -1,0 +1,77 @@
+{
+    "name": "typosquatAlertInvestigation",
+    "version": "1.0.0",
+    "fsrMinCompatibility": "7.2.0",
+    "type": "solutionpack",
+    "local": true,
+    "label": "Typosquat Alert Investigation",
+    "dependencies": [
+        {
+            "name": "sOARFramework",
+            "type": "solutionpack",
+            "label": "SOAR Framework",
+            "minVersion": null
+        },
+        {
+            "name": "socSimulator",
+            "type": "solutionpack",
+            "label": "SOC Simulator",
+            "minVersion": null
+        }
+    ],
+    "prerequisite": "- Configure the \"Whois Freaks\" connector to get DNS lookup and whois information of Domain\n- Configure the \"Whois XML API\" connectors to get Domain and Sub-Domain information \n- Configure the \"Censys\" connector to get domain certificate\n- Configure the \"URLScan.io\" connector to check website brand",
+    "publisher": "Community",
+    "description": "This FortiSOAR Solution Pack for \"Typosquat Alert Investigation\" offering helps customers to readily orchestrate the investigation and alerting of brand impersonation scenarios \"Typo Squatted Domains\" discovered by FortiRecon.",
+    "help": "https://github.com/fortinet-fortisoar/solution-pack-typosquat-alert-investigation/blob/develop/README.md",
+    "category": [
+        "Threat Intelligence"
+    ],
+    "supportInfo": "Fortinet Customer Support",
+    "iconLarge": null,
+    "postInstallConfig": null,
+    "recordTags": [
+        "Phishing"
+    ],
+    "date": "2023-07-03T09:57:03+00:00",
+    "contents": {
+        "playbooks": [
+            {
+                "name": "02 - Use Case - Typosquat Alert Investigation"
+            }
+        ],
+        "globalVariables": [
+            {
+                "id": 16,
+                "name": "Demo_mode",
+                "value": "false",
+                "default_value": "false"
+            }
+        ],
+        "playbookBlocks": [],
+        "connectors": [
+            {
+                "name": "Censys",
+                "apiName": "censys"
+            },
+            {
+                "name": "URLScan.io",
+                "apiName": "urlscan-io"
+            },
+            {
+                "name": "Whois Freaks",
+                "apiName": "whois-freaks"
+            },
+            {
+                "name": "Whois XML API",
+                "apiName": "whois-xml-api"
+            }
+        ],
+        "recordSets": [
+            {
+                "name": "Scenario",
+                "apiName": "scenario",
+                "count": 1
+            }
+        ]
+    }
+}

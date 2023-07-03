@@ -1,0 +1,46 @@
+[
+    {
+        "name": "censys",
+        "label": "Censys",
+        "category": "Information",
+        "description": "This connector allows for information to be pulled from the Censys search engine",
+        "publisher": null,
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    },
+    {
+        "name": "urlscan-io",
+        "label": "URLScan.io",
+        "category": "Threat Intelligence",
+        "description": "URLScan.io provides a service that analyzes websites and the resources they request. URLScan.io provides actions like search domain, ip, hash scan URL and retrieve report of scanned url.",
+        "publisher": null,
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    },
+    {
+        "name": "whois-freaks",
+        "label": "Whois Freaks",
+        "category": "Threat Intelligence",
+        "description": "Whois Freaks provide well-parsed and structured domain WHOIS data for all domain names, registrars, countries and TLDs since the birth of internet",
+        "publisher": null,
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    },
+    {
+        "name": "whois-xml-api",
+        "label": "Whois XML API",
+        "category": "Information",
+        "description": "Whois XML API Provides comprehensive set of real-time and historic Whois, Domain name and DNS Data",
+        "publisher": null,
+        "operation_roles": [],
+        "configurations": [],
+        "dataImports": [],
+        "install_mode": "rpm"
+    }
+]

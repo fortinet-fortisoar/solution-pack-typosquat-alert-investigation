@@ -1,0 +1,1717 @@
+{
+    "@type": "Workflow",
+    "triggerLimit": null,
+    "name": "Investigate High Risk Typo Squatting Domain Response",
+    "aliasName": null,
+    "tag": null,
+    "description": "Investigate High Risk Typo Squatting Domain Response",
+    "isActive": true,
+    "debug": false,
+    "singleRecordExecution": false,
+    "remoteExecutableFlag": false,
+    "parameters": [],
+    "synchronous": false,
+    "collection": "\/api\/3\/workflow_collections\/d796b91e-0878-4a44-9e4b-3d8d0dcded31",
+    "versions": [],
+    "triggerStep": "\/api\/3\/workflow_steps\/1d905cf1-2a11-4151-a449-8c72b49d59f9",
+    "steps": [
+        {
+            "@type": "WorkflowStep",
+            "name": "Add Not for Request Approved",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "alerts": "{{vars.alertIRI}}",
+                    "people": [],
+                    "content": "<p>- Request to block indicators is&nbsp; <span style=\"background: #28B35C; color: #fff;\" class=\"badge badge-success\"> Approved<\/span><\/p>\n<p>- Proceeding with block procedure<\/p>",
+                    "__replace": "",
+                    "isImportant": false,
+                    "peopleUpdated": false
+                },
+                "_showJson": false,
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/comments",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "3460",
+            "left": "220",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "55850c08-ac6e-4e1b-a294-8b4274d11fe3"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Analyst Confirm for Domain Typo Squatting",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Confirm Domain Typo Squatting",
+                        "description": "IP Address is not resolved for the Potentially Squatting domain and hence **\"{{vars.alertSourceData.similar_domain}}\"**is Typo Squatting Domain.",
+                        "inputVariables": []
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "agent_id": null,
+                "resources": "alerts",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Confirm Domain Squatting",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/0c0e0981-a8ae-487a-8b7d-fef9a9f21e32"
+                        },
+                        {
+                            "option": "Continue Monitor Domain",
+                            "step_iri": "\/api\/3\/workflow_steps\/a6aa42be-179b-42bf-9f56-384e9a9e9cbc"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                },
+                "inline_channel_list": [],
+                "external_channel_list": [],
+                "unauthenticated_input": false
+            },
+            "status": null,
+            "top": "2220",
+            "left": "400",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "group": null,
+            "uuid": "7420f6f7-e33e-4b15-9660-91892093940c"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Approval to Block Malicious Indicators",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Approval - Block Malicious Indicators",
+                        "description": "<p>Please approve blocking of squatting domain indicator \"{{vars.alertSourceData['similar_domain']}}\" <\/p>",
+                        "inputVariables": []
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "agent_id": null,
+                "resources": "alerts",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Yes",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/55850c08-ac6e-4e1b-a294-8b4274d11fe3"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                },
+                "inline_channel_list": [],
+                "external_channel_list": [],
+                "unauthenticated_input": false
+            },
+            "status": null,
+            "top": "3340",
+            "left": "220",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "group": null,
+            "uuid": "6696e422-c6fd-4174-ad6a-7b008981b6b0"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Block Typo Squatting Domain",
+            "description": null,
+            "arguments": {
+                "arguments": {
+                    "inputActionReasons": "Block initiated by playbook.",
+                    "inputIndicatorValue": "{{vars.steps.Find_Potentially_Squatting_Domain[0].value}}",
+                    "inputIndicatorRecordIRI": "{{vars.steps.Find_Potentially_Squatting_Domain[0]['@id']}}"
+                },
+                "apply_async": false,
+                "step_variables": [],
+                "pass_parent_env": false,
+                "pass_input_record": true,
+                "workflowReference": "\/api\/3\/workflows\/7c5946d2-be83-4991-8b67-fdc568166260"
+            },
+            "status": null,
+            "top": "3580",
+            "left": "220",
+            "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
+            "group": null,
+            "uuid": "ec49c248-7f01-4ac2-aa66-3bbf0a401f78"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Check Website Brand",
+            "description": null,
+            "arguments": {
+                "name": "URLScan.io",
+                "config": "ea63aece-3c1f-4dc4-9ad6-ca07dd87782d",
+                "params": {
+                    "url": "http:\/\/www.{{vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords[0].name}}",
+                    "private": true
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Potentially Squatting \"<strong>{{vars.alertSourceData.similar_domain}}\"<\/strong> Domain Certificate Summary<\/p>\n<p>{{vars.steps.Create_Domain_Certificate_HTML_Table.data}}<\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
+                },
+                "version": "1.1.2",
+                "connector": "urlscan-io",
+                "operation": "submit_url",
+                "operationTitle": "Submit URL",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "60",
+            "left": "40",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/11349599-2c77-400f-86b5-9a359b09d8f4",
+            "uuid": "0e242fb6-90b9-4ee6-b058-1a283ee0f8d1"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Close Alert As False Positive",
+            "description": null,
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Monitored Domain and Potentially Squatting Domain are owned by the same company \"<strong>{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}\"<\/strong>.<\/p>\n<p>&nbsp;<\/p>\n<p><strong>Close Alert as False Positive<\/strong><\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
+                },
+                "resource": {
+                    "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232"
+                },
+                "operation": "Append",
+                "collection": "{{vars.alertIRI}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/alerts",
+                "fieldOperation": [],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1900",
+            "left": "240",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": null,
+            "uuid": "d881a48b-c9ed-47f8-8bd0-9816a6fca1bd"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Closed Alert As True Positive",
+            "description": null,
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>{% if vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords | length %}<\/p>\n<p>Malicious certificate and website brand found, for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span style=\"background: #ba6204; color: #fff;\" class=\"badge badge-pill badge-danger\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p>{% else %}<\/p>\n<p>IP Address is not resolved for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span style=\"background: #ba6204; color: #fff;\" class=\"badge badge-pill badge-danger\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p><strong>{% endif %}<\/strong><\/p>\n<p><strong>Close Alert as True Positive<\/strong><\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/f7248c0e-cf81-49d5-818f-c85d7324be70"
+                },
+                "resource": {
+                    "__link": {
+                        "recordTags": []
+                    },
+                    "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232"
+                },
+                "_showJson": false,
+                "operation": "Overwrite",
+                "collection": "{{vars.input.records[0]['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/alerts",
+                "fieldOperation": {
+                    "recordTags": "Append"
+                },
+                "step_variables": {
+                    "spoof_set": "true"
+                }
+            },
+            "status": null,
+            "top": "3700",
+            "left": "220",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": null,
+            "uuid": "71955cbc-a94c-4de3-baa9-79e2eed371f6"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Compare Monitor and Potentially Squatting Domain",
+            "description": null,
+            "arguments": {
+                "tmp": "{% set squatting_domain_whois = {} %}\n{% if vars.steps.Fetch_Domain_Whois_Lookup.data.domain_registered == 'yes' %}\n{% set potentially_whois_dict = vars.steps.Fetch_Domain_Whois_Lookup.data %}\n{% set monitered_whois_dict = vars.steps.Get_Domain_Whois_Lookup.data %}\n{% set _ = squatting_domain_whois.update({\"Whois Doamin Fields\": \"Matched\/Unmatched\"}) %}\n{% set _ = squatting_domain_whois.update({\"Monitered Domain Name\": monitered_whois_dict.get('domain_name')}) %}\n{% set _ = squatting_domain_whois.update({\"Potentially Squatting Domain Name\": potentially_whois_dict.get('domain_name')}) %}    \n\n{% if potentially_whois_dict.registrant_contact.name == monitered_whois_dict.registrant_contact.name %}\n{% set _ = squatting_domain_whois.update({\"Registrant Name\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registrant Name\": \"&#10060;\"}) %}\n{% set _ = vars.is_whois_matched.append(\"false\") %}\n{% endif %}\n\n{% if potentially_whois_dict.registrant_contact.company == monitered_whois_dict.registrant_contact.company %}\n{% set _ = squatting_domain_whois.update({\"Registrant Company\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registrant Company\": \"&#10060;\"}) %}\n{% set _ = vars.is_whois_matched.append(\"false\") %}\n{% endif %}\n\n{% if potentially_whois_dict.registrant_contact.city == monitered_whois_dict.registrant_contact.city %}\n{% set _ = squatting_domain_whois.update({\"Registrant City\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registrant City\": \"&#10060;\"}) %}\n{% set _ = vars.is_whois_matched.append(\"false\") %}\n{% endif %}\n\n{% if potentially_whois_dict.registrant_contact.country_name == monitered_whois_dict.registrant_contact.country_name %}\n{% set _ = squatting_domain_whois.update({\"Registrant Country\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registrant Country\": \"&#10060;\"}) %}\n{% set _ = vars.is_whois_matched.append(\"false\") %}\n{% endif %}\n\n{% if potentially_whois_dict.registrant_contact.email_address == monitered_whois_dict.registrant_contact.email_address %}\n{% set _ = squatting_domain_whois.update({\"Registrant Email\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registrant Email\": \"&#10060;\"}) %}\n{% set _ = vars.is_whois_matched.append(\"false\") %}\n{% endif %}\n\n{% if potentially_whois_dict.domain_registrar.iana_id == monitered_whois_dict.domain_registrar.iana_id %}\n{% set _ = squatting_domain_whois.update({\"Registry IANA ID\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registry IANA ID\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.domain_registrar.registrar_name == monitered_whois_dict.domain_registrar.registrar_name %}\n{% set _ = squatting_domain_whois.update({\"Registry Name\": \"\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registry Name\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.domain_registrar.website_url == monitered_whois_dict.domain_registrar.website_url %}\n{% set _ = squatting_domain_whois.update({\"Registry Website\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registry Website\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.domain_registrar.email_address == monitered_whois_dict.domain_registrar.email_address %}\n{% set _ = squatting_domain_whois.update({\"Registry Email\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Registry Email\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.whois_server == monitered_whois_dict.whois_server %}\n{% set _ = squatting_domain_whois.update({\"Whois Server\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Whois Server\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.update_date == monitered_whois_dict.update_date %}\n{% set _ = squatting_domain_whois.update({\"Recent Update\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Recent Update\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.create_date == monitered_whois_dict.create_date %}\n{% set _ = squatting_domain_whois.update({\"Created Date\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Created Date\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.expiry_date == monitered_whois_dict.expiry_date %}\n{% set _ = squatting_domain_whois.update({\"Expiration Date\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Expiration Date\": \"&#10060;\"}) %}\n{% endif %}\n\n{% if potentially_whois_dict.expiry_date == monitered_whois_dict.expiry_date %}\n{% set _ = squatting_domain_whois.update({\"Expiration Date\": \"&#9989;\"}) %}\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Expiration Date\": \"&#10060;\"}) %}\n{% endif %}\n\n{% else %}\n{% set _ = squatting_domain_whois.update({\"Domain Registered\": \"Domain Not Registered\"}) %}\n{% set _ = vars.is_whois_matched.append(\"false\") %}\n{% endif %}\n{% set _ = vars.squatting_domain_whois_info.append(squatting_domain_whois) %}"
+            },
+            "status": null,
+            "top": "80",
+            "left": "20",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": "\/api\/3\/workflow_groups\/350efc2e-b420-4738-b1fc-582f53d1ecbd",
+            "uuid": "6696ac12-4b34-4281-9628-29b8daf27f54"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Compute Url Scan Summary",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "value": "<table class=\"no-border\">\n   <tr class=\"solid-border\">\n        <td style=\"vertical-align: top;\">\n            <div><a title=\"Click Link\" href=\"https:\/\/urlscan.io\/screenshots\/{{vars.steps.Check_Website_Brand.data.uuid}}.png\" target=\"_blank\" rel=\"noopener noreferrer\"><img\n                        src=\"https:\/\/urlscan.io\/screenshots\/{{vars.steps.Check_Website_Brand.data.uuid}}.png\" alt=\"Screenshot URL\" width=\"400\" height=\"200\"><\/a><\/div>\n        <\/td>\n    <\/tr>\n<\/table>"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Retrieving \"<strong>http:\/\/www.{{vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords[0].name}}\" <\/strong>website brand<\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
+                },
+                "version": "3.2.3",
+                "connector": "cyops_utilities",
+                "operation": "format_richtext",
+                "ignore_errors": false,
+                "operationTitle": "Utils: Format as RichText",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "260",
+            "left": "40",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": "\/api\/3\/workflow_groups\/11349599-2c77-400f-86b5-9a359b09d8f4",
+            "uuid": "ededbfc0-106a-41d4-873d-6cd7f702627f"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Configuration",
+            "description": null,
+            "arguments": {
+                "alertID": "{{vars.input.records[0].id}}",
+                "alertIRI": "{{vars.input.records[0]['@id']}}",
+                "useMockOutput": "{{globalVars.Demo_mode}}",
+                "alertSourceData": "{{vars.input.records[0].sourcedata}}",
+                "is_whois_matched": "[]",
+                "monitor_domain_whois_info": "[]",
+                "squatting_domain_whois_info": "[]",
+                "potentially_squatting_domain_whois_info": "[]"
+            },
+            "status": null,
+            "top": "165",
+            "left": "425",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": null,
+            "uuid": "f220be00-15a5-4d8f-a015-f714b31d0219"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Domain Certificate HTML Table",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "data": "[{\"Name\": \"{{vars.steps.Get_Domain_Certificate.data.result.names[0]}}\",\n\"Labels\": \"{{vars.steps.Get_Domain_Certificate.data.result.labels | join(',')}}\",\n\"Issuer DN\": \"{{vars.steps.Get_Domain_Certificate.data.result.parsed.issuer_dn}}\",\n\"Subject DN\": \"{{vars.steps.Get_Domain_Certificate.data.result.parsed.subject_dn}}\",\n\"Validation Level\": \"{{vars.steps.Get_Domain_Certificate.data.result.validation_level}}\",\n\"NSS Validation\": \"{{vars.steps.Get_Domain_Certificate.data.result.validation.nss.is_valid}}\",\n\"Apple Validation\": \"{{vars.steps.Get_Domain_Certificate.data.result.validation.apple.is_valid}}\",\n\"Chrome Validation\": \"{{vars.steps.Get_Domain_Certificate.data.result.validation.chrome.is_valid}}\",\n\"Microsoft Validation\": \"{{vars.steps.Get_Domain_Certificate.data.result.validation.microsoft.is_valid}}\"}]",
+                    "display": "Vertical",
+                    "styling": false,
+                    "template": "Stylized with row selection",
+                    "row_fields": ""
+                },
+                "version": "3.2.3",
+                "connector": "cyops_utilities",
+                "operation": "json_to_html",
+                "operationTitle": "Utils: Convert JSON into a HTML Table",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "20",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": "\/api\/3\/workflow_groups\/77736b3c-7464-4310-9bba-9421a97180e4",
+            "uuid": "7397c492-ccc3-4db5-a90f-d3921f1317a8"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Monitored Domain Whois HTML Table",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "data": "{{vars.monitor_domain_whois_info}}",
+                    "display": "Vertical",
+                    "styling": false,
+                    "template": "Stylized with row selection",
+                    "row_fields": ""
+                },
+                "version": "3.2.3",
+                "connector": "cyops_utilities",
+                "operation": "json_to_html",
+                "operationTitle": "Utils: Convert JSON into a HTML Table",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "440",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": "\/api\/3\/workflow_groups\/74775fbb-bda6-477f-bc48-86da02b613a4",
+            "uuid": "6b2dce9c-1f35-424a-95eb-3d3dd8c8591b"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Potentially Squatting Whois HTML Table",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "data": "{{vars.potentially_squatting_domain_whois_info}}",
+                    "display": "Vertical",
+                    "styling": false,
+                    "template": "Stylized with row selection",
+                    "row_fields": ""
+                },
+                "version": "3.2.3",
+                "connector": "cyops_utilities",
+                "operation": "json_to_html",
+                "operationTitle": "Utils: Convert JSON into a HTML Table",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "440",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": "\/api\/3\/workflow_groups\/a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "uuid": "5ead8f5b-9e6c-40af-b918-30c8a19763b6"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Task for Takedown Request",
+            "description": "Create a manual task to raise typo domain takedown request",
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p><strong>\"{{vars.alertSourceData.similar_domain}}\"<\/strong> domain is found as a Typo Squatting Domain. Hence, initiating takedown request by creating the <a title=\"Task #{{vars.result.id}} - {{vars.result.name}}\" href=\"\/modules\/view-panel\/tasks\/{{vars.result.uuid}}\">Task #{{vars.result.id}} - {{vars.result.name}}<\/a><\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11"
+                },
+                "resource": {
+                    "name": "Raise Takedown Request - {{vars.alertSourceData['similar_domain']}}",
+                    "type": "\/api\/3\/picklists\/a4f387b1-ff5f-4fc6-b1eb-c2025bfa7089",
+                    "__link": {
+                        "alerts": "{{vars.alertIRI}}"
+                    },
+                    "status": "\/api\/3\/picklists\/7669725a-28cc-4b19-98a3-9ca71e0f88f4",
+                    "tenant": "{{vars.input.records[0].tenant['@id']}}",
+                    "priority": "{% if vars.input.records[0].severity.itemValue == 'Critical' %}{{\"TaskPriority\" | picklist(\"Urgent\", \"@id\")}}{% else %}{{\"TaskPriority\" | picklist(\"High\", \"@id\")}}{% endif %}",
+                    "__replace": "",
+                    "recordTags": [
+                        "\/api\/3\/tags\/FortiRecon",
+                        "\/api\/3\/tags\/Takedown Request",
+                        "\/api\/3\/tags\/Typo Squatting"
+                    ],
+                    "description": "- Alert Description \n{{vars.input.records[0].description}}\n\n{% if vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords | length %}\n\nMalicious certificate and website brand found, for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is Typo Squatting Domain\n\n- **Certificate Summary for \"{{vars.alertSourceData.similar_domain}}\" Domain**\n{{vars.steps.Create_Domain_Certificate_HTML_Table.data}}\n\n\n- **Screenshot of website brand**\n{{vars.steps.Compute_Url_Scan_Summary.data['formatted_string']}}\n\n- **Analyst observation** \n{{vars.steps.Is_Domain_Certificate_and_Website_Brand_Abuse.input.observedAnalysis}}\n{% else %}\nIP Address is not resolved for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is Typo Squatting Domain\n{% endif %}\n\n\n\n\n",
+                    "assignedOnDate": "{{arrow.utcnow().int_timestamp}}",
+                    "assignedToPerson": "{{vars.input.records[0].assignedTo['@id']}}"
+                },
+                "operation": "Append",
+                "collection": "\/api\/3\/tasks",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "3200",
+            "left": "220",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "0c0e0981-a8ae-487a-8b7d-fef9a9f21e32"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Whois Compared Data HTML Table",
+            "description": null,
+            "arguments": {
+                "params": {
+                    "data": "{{vars.squatting_domain_whois_info}}",
+                    "display": "Vertical",
+                    "styling": false,
+                    "template": "Stylized with row selection",
+                    "row_fields": ""
+                },
+                "version": "3.2.3",
+                "connector": "cyops_utilities",
+                "operation": "json_to_html",
+                "operationTitle": "Utils: Convert JSON into a HTML Table",
+                "step_variables": []
+            },
+            "status": null,
+            "top": "200",
+            "left": "20",
+            "stepType": "\/api\/3\/workflow_step_types\/0109f35d-090b-4a2b-bd8a-94cbc3508562",
+            "group": "\/api\/3\/workflow_groups\/350efc2e-b420-4738-b1fc-582f53d1ecbd",
+            "uuid": "f3ea9237-5a7a-461d-a469-b698a7b9eb56"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Create Whois Info Comment",
+            "description": null,
+            "arguments": {
+                "resource": {
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "alerts": "{{vars.alertIRI}}",
+                    "people": [],
+                    "content": "<p><strong>Similarity between Monitored Domain Vs Potentially Squatting Domain<\/strong><\/p>\n<p>{{vars.steps.Create_Whois_Compared_Data_HTML_Table.data}}<\/p>",
+                    "__replace": "",
+                    "isImportant": false,
+                    "peopleUpdated": false
+                },
+                "operation": "Overwrite",
+                "collection": "\/api\/3\/comments",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "320",
+            "left": "20",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": "\/api\/3\/workflow_groups\/350efc2e-b420-4738-b1fc-582f53d1ecbd",
+            "uuid": "e3b96b1e-85d5-430c-8246-ca134072463f"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Fetch Domain and Subdomain Information",
+            "description": null,
+            "arguments": {
+                "name": "Whois XML API",
+                "config": "91222efe-2467-4f88-8d95-a2d18d4ae51f",
+                "params": {
+                    "sinceDate": "",
+                    "include_domain": "{{vars.alertSourceData.similar_domain.split('.')[0]}}.*",
+                    "exclude_domains": "",
+                    "include_subdomain": "{{vars.alertSourceData.similar_domain.split('.')[0]}}*,*{{vars.alertSourceData.similar_domain.split('.')[0]}},*{{vars.alertSourceData.similar_domain.split('.')[0]}}*",
+                    "exclude_subdomains": "",
+                    "exclude_search_terms": "",
+                    "include_search_terms": "Include Domain"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Retrieving Domain and Sub-Domain information for Potentially Squatting Domain <strong>\"{{vars.alertSourceData.similar_domain}}\"<\/strong><\/p>",
+                    "records": "",
+                    "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
+                },
+                "version": "1.0.0",
+                "connector": "whois-xml-api",
+                "operation": "domain_subdoamin_discovery",
+                "mock_result": "{\n  \"data\": {\n    \"domainsList\": [],\n    \"domainsCount\": 0\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"1 seconds 908 ms\"\n}",
+                "operationTitle": "Domain\/Subdoamin Discovery",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "180",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "uuid": "21740abe-7024-42c4-b69e-5361b4da27ff"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Fetch Domain Whois Lookup",
+            "description": null,
+            "arguments": {
+                "name": "Whois Freaks",
+                "config": "99b6bf0e-f8b4-4b01-875c-242ce58b3dde",
+                "params": {
+                    "whois": "Live",
+                    "domainName": "{{vars.alertSourceData.similar_domain}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Retrieving Whois information for Potentially Squatting Domain <strong>\"{{vars.alertSourceData.similar_domain}}\"<\/strong><\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11"
+                },
+                "version": "1.0.0",
+                "connector": "whois-freaks",
+                "operation": "whois_lookup",
+                "mock_result": "{\n  \"data\": {\n    \"status\": true,\n    \"query_time\": \"2023-06-27 10:31:51\",\n    \"create_date\": \"2022-08-17\",\n    \"domain_name\": \"{{vars.alertSourceData.similar_domain}}\",\n    \"expiry_date\": \"2023-08-17\",\n    \"update_date\": \"2022-08-17\",\n    \"name_servers\": [\n      \"dns1.register.com\",\n      \"dns2.register.com\"\n    ],\n    \"whois_server\": \"whois.verisign-grs.com\",\n    \"domain_status\": [\n      \"clientTransferProhibited\"\n    ],\n    \"registry_data\": {\n      \"query_time\": \"2023-06-27 10:31:40\",\n      \"domain_name\": \"LOG-IN-{{vars.alertSourceData.similar_domain}}\",\n      \"name_servers\": [\n        \"dns1.register.com\",\n        \"dns2.register.com\"\n      ],\n      \"whois_server\": \"whois.verisign-grs.com\",\n      \"domain_status\": [\n        \"clientTransferProhibited\"\n      ],\n      \"domain_registrar\": {\n        \"iana_id\": \"9\",\n        \"website_url\": \"http:\/\/www.register.com\",\n        \"phone_number\": \"+1.8003337680\",\n        \"whois_server\": \"whois.register.com\",\n        \"email_address\": \"abuse@web.com\",\n        \"registrar_name\": \"Register.com, Inc.\"\n      },\n      \"domain_registered\": \"yes\",\n      \"whois_raw_registery\": \"\\n   Domain Name: LOG-IN-{{vars.alertSourceData.similar_domain}}\\n   Registry Domain ID: 2718736455_DOMAIN_COM-VRSN\\n   Registrar WHOIS Server: whois.register.com\\n   Registrar URL: http:\/\/www.register.com\\n   Updated Date: 2022-08-17T14:47:53Z\\n   Creation Date: 2022-08-17T14:47:53Z\\n   Registry Expiry Date: 2023-08-17T14:47:53Z\\n   Registrar: Register.com, Inc.\\n   Registrar IANA ID: 9\\n   Registrar Abuse Contact Email: abuse@web.com\\n   Registrar Abuse Contact Phone: +1.8003337680\\n   Domain Status: clientTransferProhibited https:\/\/icann.org\/epp#clientTransferProhibited\\n   Name Server: DNS1.REGISTER.COM\\n   Name Server: DNS2.REGISTER.COM\\n   DNSSEC: unsigned\\n   URL of the ICANN Whois Inaccuracy Complaint Form: https:\/\/www.icann.org\/wicf\/\\n>>> Last update of whois database: 2023-06-27T10:31:20Z <<<\\n\\nFor more information on Whois status codes, please visit https:\/\/icann.org\/epp\\n\\nNOTICE: The expiration date displayed in this record is the date the\\nregistrar's sponsorship of the domain name registration in the registry is\\ncurrently set to expire. This date does not necessarily reflect the expiration\\ndate of the domain name registrant's agreement with the sponsoring\\nregistrar.  Users may consult the sponsoring registrar's Whois database to\\nview the registrar's reported date of expiration for this registration.\\n\\nTERMS OF USE: You are not authorized to access or query our Whois\\ndatabase through the use of electronic processes that are high-volume and\\nautomated except as reasonably necessary to register domain names or\\nmodify existing registrations; the Data in VeriSign Global Registry\\nServices' (\\\"VeriSign\\\") Whois database is provided by VeriSign for\\ninformation purposes only, and to assist persons in obtaining information\\nabout or related to a domain name registration record. VeriSign does not\\nguarantee its accuracy. By submitting a Whois query, you agree to abide\\nby the following terms of use: You agree that you may use this Data only\\nfor lawful purposes and that under no circumstances will you use this Data\\nto: (1) allow, enable, or otherwise support the transmission of mass\\nunsolicited, commercial advertising or solicitations via e-mail, telephone,\\nor facsimile; or (2) enable high volume, automated, electronic processes\\nthat apply to VeriSign (or its computer systems). The compilation,\\nrepackaging, dissemination or other use of this Data is expressly\\nprohibited without the prior written consent of VeriSign. You agree not to\\nuse electronic processes that are automated and high-volume to access or\\nquery the Whois database except as reasonably necessary to register\\ndomain names or modify existing registrations. VeriSign reserves the right\\nto restrict your access to the Whois database in its sole discretion to ensure\\noperational stability.  VeriSign may restrict or terminate your access to the\\nWhois database for failure to abide by these terms of use. VeriSign\\nreserves the right to modify these terms at any time.\\n\\nThe Registry database contains ONLY .COM, .NET, .EDU domains and\\nRegistrars.\"\n    },\n    \"domain_registrar\": {\n      \"iana_id\": \"9\",\n      \"website_url\": \"http:\/\/www.register.com\",\n      \"phone_number\": \"+1.8773812449\",\n      \"whois_server\": \"whois.register.com\",\n      \"email_address\": \"domain.operations@web.com\",\n      \"registrar_name\": \"Register.com, Inc.\"\n    },\n    \"whois_raw_domain\": \"\\nDomain Name: log-in-{{vars.alertSourceData.similar_domain}}\\nRegistry Domain ID: 2718736455_DOMAIN_COM-VRSN\\nRegistrar WHOIS Server: whois.register.com\\nRegistrar URL: http:\/\/www.register.com\\nUpdated Date: 2022-08-17T14:47:54Z\\nCreation Date: 2022-08-17T14:47:53Z\\nRegistrar Registration Expiration Date: 2023-08-17T14:47:53Z\\nRegistrar: Register.com, Inc.\\nRegistrar IANA ID: 9\\nReseller: \\nDomain Status: clientTransferProhibited http:\/\/icann.org\/epp#clientTransferProhibited\\nRegistry Registrant ID: \\nRegistrant Name: PERFECT PRIVACY, LLC\\nRegistrant Organization: \\nRegistrant Street: 5335 Gate Parkway\\nRegistrant City: Jacksonville\\nRegistrant State\/Province: FL\\nRegistrant Postal Code: 32256\\nRegistrant Country: US\\nRegistrant Phone: +1.9027492701\\nRegistrant Phone Ext: \\nRegistrant Fax: \\nRegistrant Fax Ext: \\nRegistrant Email: 984vfs9f8mi749sd517eclcpmg@domaindiscreet.com\\nRegistry Admin ID: \\nAdmin Name: PERFECT PRIVACY, LLC\\nAdmin Organization: \\nAdmin Street: 5335 Gate Parkway\\nAdmin City: Jacksonville\\nAdmin State\/Province: FL\\nAdmin Postal Code: 32256\\nAdmin Country: US\\nAdmin Phone: +1.9027492701\\nAdmin Phone Ext: \\nAdmin Fax: \\nAdmin Fax Ext: \\nAdmin Email: 984vfs9f8mi749sd517eclcpmg@domaindiscreet.com\\nRegistry Tech ID: \\nTech Name: PERFECT PRIVACY, LLC\\nTech Organization: \\nTech Street: 5335 Gate Parkway\\nTech City: Jacksonville\\nTech State\/Province: FL\\nTech Postal Code: 32256\\nTech Country: US\\nTech Phone: +1.9027492701\\nTech Phone Ext: \\nTech Fax: \\nTech Fax Ext: \\nTech Email: 984vfs9f8mi749sd517eclcpmg@domaindiscreet.com\\nName Server: dns1.register.com\\nName Server: dns2.register.com\\nDNSSEC: Unsigned\\nRegistrar Abuse Contact Email: domain.operations@web.com\\nRegistrar Abuse Contact Phone: +1.8773812449\\nURL of the ICANN WHOIS Data Problem Reporting System: http:\/\/wdprs.internic.net\/\\n>>> Last update of WHOIS database: 2023-06-27T10:31:50Z <<<\\n\\nFor more information on Whois status codes, please visit https:\/\/www.icann.org\/resources\/pages\/epp-status-codes-2014-06-16-en.\\n\\nThe data in Register.com's WHOIS database is provided to you by\\nRegister.com for information purposes only, that is, to assist you in\\nobtaining information about or related to a domain name registration\\nrecord.  Register.com makes this information available \\\"as is,\\\" and\\ndoes not guarantee its accuracy.  By submitting a WHOIS query, you\\nagree that you will use this data only for lawful purposes and that,\\nunder no circumstances will you use this data to: (1) allow, enable,\\nor otherwise support the transmission of mass unsolicited, commercial\\nadvertising or solicitations via direct mail, electronic mail, or by\\ntelephone; or (2) enable high volume, automated, electronic processes\\nthat apply to Register.com (or its systems).  The compilation,\\nrepackaging, dissemination or other use of this data is expressly\\nprohibited without the prior written consent of Register.com.\\nRegister.com reserves the right to modify these terms at any time.\\nBy submitting this query, you agree to abide by these terms.\",\n    \"domain_registered\": \"yes\",\n    \"technical_contact\": {\n      \"city\": \"Jacksonville\",\n      \"name\": \"PERFECT PRIVACY, LLC\",\n      \"phone\": \"+1.9027492701\",\n      \"state\": \"FL\",\n      \"street\": \"5335 Gate Parkway\",\n      \"zip_code\": \"32256\",\n      \"country_code\": \"US\",\n      \"country_name\": \"United States\",\n      \"email_address\": \"984vfs9f8mi749sd517eclcpmg@domaindiscreet.com\"\n    },\n    \"registrant_contact\": {\n      \"city\": \"Jacksonville\",\n      \"name\": \"PERFECT PRIVACY, LLC\",\n      \"phone\": \"+1.9027492701\",\n      \"state\": \"FL\",\n      \"street\": \"5335 Gate Parkway\",\n      \"zip_code\": \"32256\",\n      \"country_code\": \"US\",\n      \"country_name\": \"United States\",\n      \"email_address\": \"984vfs9f8mi749sd517eclcpmg@domaindiscreet.com\"\n    },\n    \"administrative_contact\": {\n      \"city\": \"Jacksonville\",\n      \"name\": \"PERFECT PRIVACY, LLC\",\n      \"phone\": \"+1.9027492701\",\n      \"state\": \"FL\",\n      \"street\": \"5335 Gate Parkway\",\n      \"zip_code\": \"32256\",\n      \"country_code\": \"US\",\n      \"country_name\": \"United States\",\n      \"email_address\": \"984vfs9f8mi749sd517eclcpmg@domaindiscreet.com\"\n    }\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"12 seconds 445 ms\"\n}",
+                "operationTitle": "Get Whois Lookup",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "60",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "uuid": "9b533589-dcbb-476f-ab64-bb030b5f93ea"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Find Monitored Domain",
+            "description": null,
+            "arguments": {
+                "query": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "object",
+                            "field": "typeofindicator",
+                            "value": "\/api\/3\/picklists\/5a5a7d42-be27-4903-858a-19909ebfa1eb",
+                            "_value": {
+                                "@id": "\/api\/3\/picklists\/5a5a7d42-be27-4903-858a-19909ebfa1eb",
+                                "itemValue": "Domain"
+                            },
+                            "operator": "eq"
+                        },
+                        {
+                            "type": "primitive",
+                            "field": "value",
+                            "value": "{{vars.alertSourceData.original_domain}}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        },
+                        {
+                            "type": "primitive",
+                            "field": "alerts.id",
+                            "value": "{{vars.alertID}}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        }
+                    ]
+                },
+                "module": "indicators?$limit=30&$relationships=true&$fsr_max_relation_count=100",
+                "checkboxFields": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "580",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
+            "group": "\/api\/3\/workflow_groups\/74775fbb-bda6-477f-bc48-86da02b613a4",
+            "uuid": "0ea4488d-d8b2-47a2-ad73-c5f81031d3d2"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Find Potentially Squatting Domain",
+            "description": null,
+            "arguments": {
+                "query": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": [
+                        {
+                            "type": "object",
+                            "field": "typeofindicator",
+                            "value": "\/api\/3\/picklists\/5a5a7d42-be27-4903-858a-19909ebfa1eb",
+                            "_value": {
+                                "@id": "\/api\/3\/picklists\/5a5a7d42-be27-4903-858a-19909ebfa1eb",
+                                "itemValue": "Domain"
+                            },
+                            "operator": "eq"
+                        },
+                        {
+                            "type": "primitive",
+                            "field": "value",
+                            "value": "{{vars.alertSourceData.similar_domain}}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        },
+                        {
+                            "type": "primitive",
+                            "field": "alerts.id",
+                            "value": "{{vars.alertID}}",
+                            "operator": "eq",
+                            "_operator": "eq"
+                        }
+                    ]
+                },
+                "module": "indicators?$limit=30&$relationships=true&$fsr_max_relation_count=100",
+                "checkboxFields": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "580",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928770",
+            "group": "\/api\/3\/workflow_groups\/a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "uuid": "08d8c01d-d0e2-4f7c-b110-5c58499a7400"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Domain and Subdomain Info",
+            "description": null,
+            "arguments": {
+                "name": "Whois XML API",
+                "config": "91222efe-2467-4f88-8d95-a2d18d4ae51f",
+                "params": {
+                    "sinceDate": "",
+                    "include_domain": "{{vars.alertSourceData.original_domain.split('.')[0]}}.*",
+                    "exclude_domains": "",
+                    "include_subdomain": "{{vars.alertSourceData.original_domain.split('.')[0]}}*,*{{vars.alertSourceData.original_domain.split('.')[0]}},*{{vars.alertSourceData.original_domain.split('.')[0]}}*",
+                    "exclude_subdomains": "",
+                    "exclude_search_terms": "",
+                    "include_search_terms": "Include Domain"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Retrieving Domain and Sub-Domain information for Monitored Domain <strong>\"{{vars.alertSourceData.original_domain}}\"<\/strong><\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/7a0cbb60-8cef-4b5e-9ee1-20d156046ba4"
+                },
+                "version": "1.0.0",
+                "connector": "whois-xml-api",
+                "operation": "domain_subdoamin_discovery",
+                "mock_result": "{\n  \"data\": {\n    \"domainsList\": [\n      \"{{vars.alertSourceData.original_domain.split('.')[0]}}.{{vars.alertSourceData.original_domain.split('.')[0]}}.ci\",\n      \"{{vars.alertSourceData.original_domain.split('.')[0]}}.{{vars.alertSourceData.original_domain.split('.')[0]}}.com.cm\",\n      \"{{vars.alertSourceData.original_domain.split('.')[0]}}.{{vars.alertSourceData.original_domain.split('.')[0]}}.onl\"\n    ],\n    \"domainsCount\": 3\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"2 seconds 314 ms\"\n}",
+                "operationTitle": "Domain\/Subdoamin Discovery",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "180",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/74775fbb-bda6-477f-bc48-86da02b613a4",
+            "uuid": "ddb65dc1-b093-4a12-9841-c07f4bd709cb"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Domain Certificate",
+            "description": null,
+            "arguments": {
+                "name": "Censys",
+                "config": "dc8b19f1-0139-4bd7-8633-c985e457d2a0",
+                "params": {
+                    "fingerprint": "{{vars.domain_certificates[0]}}"
+                },
+                "version": "2.0.0",
+                "connector": "censys",
+                "operation": "lookup_certificate",
+                "operationTitle": "Lookup Certificate",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "180",
+            "left": "20",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/77736b3c-7464-4310-9bba-9421a97180e4",
+            "uuid": "cd5649be-f033-47c1-9533-fff41cf9edbb"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Domain SHA256",
+            "description": null,
+            "arguments": {
+                "name": "Censys",
+                "config": "dc8b19f1-0139-4bd7-8633-c985e457d2a0",
+                "params": {
+                    "ip": "{{vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords[0].address}}",
+                    "at_time": ""
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>IP Address <strong>{{vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords[0].address}}<\/strong> is resolved for the Potentially Squatting domain <strong>{{vars.alertSourceData.similar_domain}}<\/strong><\/p>",
+                    "records": "",
+                    "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
+                },
+                "version": "2.0.0",
+                "connector": "censys",
+                "operation": "get_host_details",
+                "operationTitle": "Get Host Details Using IP Address",
+                "pickFromTenant": false,
+                "step_variables": {
+                    "domain_certificates": "{% set cert = [] %}{% for item in vars.steps.Get_Domain_SHA256.data.result.services %}{% if item.tls is defined %}{% set _ = cert.append(item.tls.certificates['leaf_data'].fingerprint) %}{% endif %}{% endfor %}{{cert | unique}}"
+                }
+            },
+            "status": null,
+            "top": "60",
+            "left": "20",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/77736b3c-7464-4310-9bba-9421a97180e4",
+            "uuid": "9536d693-cf8f-4cfe-a6e6-ab818d889b39"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Domain Whois Lookup",
+            "description": null,
+            "arguments": {
+                "name": "Whois Freaks",
+                "config": "99b6bf0e-f8b4-4b01-875c-242ce58b3dde",
+                "params": {
+                    "whois": "Live",
+                    "domainName": "{{vars.alertSourceData.original_domain}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Retrieving Whois information for Monitored Domain \"<strong>{{vars.alertSourceData.original_domain}}\"<\/strong><\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11"
+                },
+                "version": "1.0.0",
+                "connector": "whois-freaks",
+                "operation": "whois_lookup",
+                "mock_result": "{\n  \"data\": {\n    \"status\": true,\n    \"query_time\": \"2023-06-27 10:31:51\",\n    \"create_date\": \"1994-08-18\",\n    \"domain_name\": \"{{vars.alertSourceData.original_domain}}\",\n    \"expiry_date\": \"2023-08-17\",\n    \"update_date\": \"2022-07-16\",\n    \"name_servers\": [\n      \"nse12.o365filtering.com\",\n      \"ns3-38.azure-dns.org\",\n      \"ns2-38.azure-dns.net\",\n      \"ns1-38.azure-dns.com\",\n      \"nse13.o365filtering.com\",\n      \"nse21.o365filtering.com\",\n      \"ns4-38.azure-dns.info\",\n      \"nse24.o365filtering.com\"\n    ],\n    \"whois_server\": \"whois.verisign-grs.com\",\n    \"domain_status\": [\n      \"clientTransferProhibited\",\n      \"clientDeleteProhibited\",\n      \"serverDeleteProhibited\",\n      \"serverTransferProhibited\",\n      \"serverUpdateProhibited\",\n      \"clientUpdateProhibited\"\n    ],\n    \"registry_data\": {\n      \"query_time\": \"2023-06-27 10:31:40\",\n      \"domain_name\": \"{{vars.alertSourceData.original_domain}}\",\n      \"name_servers\": [\n        \"nse12.o365filtering.com\",\n        \"ns2-38.azure-dns.net\",\n        \"ns3-38.azure-dns.org\",\n        \"ns1-38.azure-dns.com\",\n        \"nse13.o365filtering.com\",\n        \"nse21.o365filtering.com\",\n        \"ns4-38.azure-dns.info\",\n        \"nse24.o365filtering.com\"\n      ],\n      \"whois_server\": \"whois.verisign-grs.com\",\n      \"domain_status\": [\n        \"clientDeleteProhibited\",\n        \"clientTransferProhibited\",\n        \"serverDeleteProhibited\",\n        \"serverTransferProhibited\",\n        \"serverUpdateProhibited\",\n        \"clientUpdateProhibited\"\n      ],\n      \"domain_registrar\": {\n        \"iana_id\": \"292\",\n        \"website_url\": \"http:\/\/www.markmonitor.com\",\n        \"phone_number\": \"+1.2086851750\",\n        \"whois_server\": \"whois.markmonitor.com\",\n        \"email_address\": \"abusecomplaints@markmonitor.com\",\n        \"registrar_name\": \"MarkMonitor Inc.\"\n      },\n      \"domain_registered\": \"yes\",\n      \"whois_raw_registery\": \"\\n   Domain Name: {{vars.alertSourceData.original_domain}}\\n   Registry Domain ID: 2019401_DOMAIN_COM-VRSN\\n   Registrar WHOIS Server: whois.markmonitor.com\\n   Registrar URL: http:\/\/www.markmonitor.com\\n   Updated Date: 2022-07-16T09:37:55Z\\n   Creation Date: 1994-08-18T04:00:00Z\\n   Registry Expiry Date: 2023-08-17T04:00:00Z\\n   Registrar: MarkMonitor Inc.\\n   Registrar IANA ID: 292\\n   Registrar Abuse Contact Email: abusecomplaints@markmonitor.com\\n   Registrar Abuse Contact Phone: +1.2086851750\\n   Domain Status: clientDeleteProhibited https:\/\/icann.org\/epp#clientDeleteProhibited\\n   Domain Status: clientTransferProhibited https:\/\/icann.org\/epp#clientTransferProhibited\\n   Domain Status: clientUpdateProhibited https:\/\/icann.org\/epp#clientUpdateProhibited\\n   Domain Status: serverDeleteProhibited https:\/\/icann.org\/epp#serverDeleteProhibited\\n   Domain Status: serverTransferProhibited https:\/\/icann.org\/epp#serverTransferProhibited\\n   Domain Status: serverUpdateProhibited https:\/\/icann.org\/epp#serverUpdateProhibited\\n   Name Server: NS1-38.AZURE-DNS.COM\\n   Name Server: NS2-38.AZURE-DNS.NET\\n   Name Server: NS3-38.AZURE-DNS.ORG\\n   Name Server: NS4-38.AZURE-DNS.INFO\\n   Name Server: NSE12.O365FILTERING.COM\\n   Name Server: NSE13.O365FILTERING.COM\\n   Name Server: NSE21.O365FILTERING.COM\\n   Name Server: NSE24.O365FILTERING.COM\\n   DNSSEC: unsigned\\n   URL of the ICANN Whois Inaccuracy Complaint Form: https:\/\/www.icann.org\/wicf\/\\n>>> Last update of whois database: 2023-06-27T10:31:20Z <<<\\n\\nFor more information on Whois status codes, please visit https:\/\/icann.org\/epp\\n\\nNOTICE: The expiration date displayed in this record is the date the\\nregistrar's sponsorship of the domain name registration in the registry is\\ncurrently set to expire. This date does not necessarily reflect the expiration\\ndate of the domain name registrant's agreement with the sponsoring\\nregistrar.  Users may consult the sponsoring registrar's Whois database to\\nview the registrar's reported date of expiration for this registration.\\n\\nTERMS OF USE: You are not authorized to access or query our Whois\\ndatabase through the use of electronic processes that are high-volume and\\nautomated except as reasonably necessary to register domain names or\\nmodify existing registrations; the Data in VeriSign Global Registry\\nServices' (\\\"VeriSign\\\") Whois database is provided by VeriSign for\\ninformation purposes only, and to assist persons in obtaining information\\nabout or related to a domain name registration record. VeriSign does not\\nguarantee its accuracy. By submitting a Whois query, you agree to abide\\nby the following terms of use: You agree that you may use this Data only\\nfor lawful purposes and that under no circumstances will you use this Data\\nto: (1) allow, enable, or otherwise support the transmission of mass\\nunsolicited, commercial advertising or solicitations via e-mail, telephone,\\nor facsimile; or (2) enable high volume, automated, electronic processes\\nthat apply to VeriSign (or its computer systems). The compilation,\\nrepackaging, dissemination or other use of this Data is expressly\\nprohibited without the prior written consent of VeriSign. You agree not to\\nuse electronic processes that are automated and high-volume to access or\\nquery the Whois database except as reasonably necessary to register\\ndomain names or modify existing registrations. VeriSign reserves the right\\nto restrict your access to the Whois database in its sole discretion to ensure\\noperational stability.  VeriSign may restrict or terminate your access to the\\nWhois database for failure to abide by these terms of use. VeriSign\\nreserves the right to modify these terms at any time.\\n\\nThe Registry database contains ONLY .COM, .NET, .EDU domains and\\nRegistrars.\"\n    },\n    \"domain_registrar\": {\n      \"iana_id\": \"292\",\n      \"website_url\": \"http:\/\/www.markmonitor.com\",\n      \"phone_number\": \"+1.2086851750\",\n      \"whois_server\": \"whois.markmonitor.com\",\n      \"email_address\": \"abusecomplaints@markmonitor.com\",\n      \"registrar_name\": \"MarkMonitor, Inc.\"\n    },\n    \"whois_raw_domain\": \"\\nDomain Name: {{vars.alertSourceData.original_domain}}\\nRegistry Domain ID: 2019401_DOMAIN_COM-VRSN\\nRegistrar WHOIS Server: whois.markmonitor.com\\nRegistrar URL: http:\/\/www.markmonitor.com\\nUpdated Date: 2022-07-16T09:37:55+0000\\nCreation Date: 1994-08-18T04:00:00+0000\\nRegistrar Registration Expiration Date: 2023-08-17T00:00:00+0000\\nRegistrar: MarkMonitor, Inc.\\nRegistrar IANA ID: 292\\nRegistrar Abuse Contact Email: abusecomplaints@markmonitor.com\\nRegistrar Abuse Contact Phone: +1.2086851750\\nDomain Status: clientUpdateProhibited (https:\/\/www.icann.org\/epp#clientUpdateProhibited)\\nDomain Status: clientTransferProhibited (https:\/\/www.icann.org\/epp#clientTransferProhibited)\\nDomain Status: clientDeleteProhibited (https:\/\/www.icann.org\/epp#clientDeleteProhibited)\\nDomain Status: serverUpdateProhibited (https:\/\/www.icann.org\/epp#serverUpdateProhibited)\\nDomain Status: serverTransferProhibited (https:\/\/www.icann.org\/epp#serverTransferProhibited)\\nDomain Status: serverDeleteProhibited (https:\/\/www.icann.org\/epp#serverDeleteProhibited)\\nRegistry Registrant ID: \\nRegistrant Name: Domain Administrator\\nRegistrant Organization: Microsoft Corporation\\nRegistrant Street: One Microsoft Way, \\nRegistrant City: Redmond\\nRegistrant State\/Province: WA\\nRegistrant Postal Code: 98052\\nRegistrant Country: US\\nRegistrant Phone: +1.4258828080\\nRegistrant Phone Ext: \\nRegistrant Fax: +1.4259367329\\nRegistrant Fax Ext: \\nRegistrant Email: domains@microsoft.com\\nRegistry Admin ID: \\nAdmin Name: Domain Administrator\\nAdmin Organization: Microsoft Corporation\\nAdmin Street: One Microsoft Way, \\nAdmin City: Redmond\\nAdmin State\/Province: WA\\nAdmin Postal Code: 98052\\nAdmin Country: US\\nAdmin Phone: +1.4258828080\\nAdmin Phone Ext: \\nAdmin Fax: +1.4259367329\\nAdmin Fax Ext: \\nAdmin Email: domains@microsoft.com\\nRegistry Tech ID: \\nTech Name: MSN Hostmaster\\nTech Organization: Microsoft Corporation\\nTech Street: One Microsoft Way, \\nTech City: Redmond\\nTech State\/Province: WA\\nTech Postal Code: 98052\\nTech Country: US\\nTech Phone: +1.4258828080\\nTech Phone Ext: \\nTech Fax: +1.4259367329\\nTech Fax Ext: \\nTech Email: msnhst@microsoft.com\\nName Server: ns1-38.azure-dns.com\\nName Server: nse13.o365filtering.com\\nName Server: ns3-38.azure-dns.org\\nName Server: nse12.o365filtering.com\\nName Server: nse21.o365filtering.com\\nName Server: ns4-38.azure-dns.info\\nName Server: ns2-38.azure-dns.net\\nName Server: nse24.o365filtering.com\\nDNSSEC: unsigned\\nURL of the ICANN WHOIS Data Problem Reporting System: http:\/\/wdprs.internic.net\/\\n>>> Last update of WHOIS database: 2023-06-27T10:28:28+0000 <<<\\n\\nFor more information on WHOIS status codes, please visit:\\n  https:\/\/www.icann.org\/resources\/pages\/epp-status-codes\\n\\nIf you wish to contact this domain\u2019s Registrant, Administrative, or Technical\\ncontact, and such email address is not visible above, you may do so via our web\\nform, pursuant to ICANN\u2019s Temporary Specification. To verify that you are not a\\nrobot, please enter your email address to receive a link to a page that\\nfacilitates email communication with the relevant contact(s).\\n\\nWeb-based WHOIS:\\n  https:\/\/domains.markmonitor.com\/whois\\n\\nIf you have a legitimate interest in viewing the non-public WHOIS details, send\\nyour request and the reasons for your request to whoisrequest@markmonitor.com\\nand specify the domain name in the subject line. We will review that request and\\nmay ask for supporting documentation and explanation.\\n\\nThe data in MarkMonitor\u2019s WHOIS database is provided for information purposes,\\nand to assist persons in obtaining information about or related to a domain\\nname\u2019s registration record. While MarkMonitor believes the data to be accurate,\\nthe data is provided \\\"as is\\\" with no guarantee or warranties regarding its\\naccuracy.\\n\\nBy submitting a WHOIS query, you agree that you will use this data only for\\nlawful purposes and that, under no circumstances will you use this data to:\\n  (1) allow, enable, or otherwise support the transmission by email, telephone,\\nor facsimile of mass, unsolicited, commercial advertising, or spam; or\\n  (2) enable high volume, automated, or electronic processes that send queries,\\ndata, or email to MarkMonitor (or its systems) or the domain name contacts (or\\nits systems).\\n\\nMarkMonitor reserves the right to modify these terms at any time.\\n\\nBy submitting this query, you agree to abide by this policy.\\n\\nMarkMonitor Domain Management(TM)\\nProtecting companies and consumers in a digital world.\\n\\nVisit MarkMonitor at https:\/\/www.markmonitor.com\\nContact us at +1.8007459229\\nIn Europe, at +44.02032062220\\n----\",\n    \"domain_registered\": \"yes\",\n    \"technical_contact\": {\n      \"fax\": \"+1.4259367329\",\n      \"city\": \"Redmond\",\n      \"name\": \"MSN Hostmaster\",\n      \"phone\": \"+1.4258828080\",\n      \"state\": \"WA\",\n      \"street\": \"One Microsoft Way,\",\n      \"company\": \"Microsoft Corporation\",\n      \"zip_code\": \"98052\",\n      \"country_code\": \"US\",\n      \"country_name\": \"United States\",\n      \"email_address\": \"msnhst@microsoft.com\"\n    },\n    \"registrant_contact\": {\n      \"fax\": \"+1.4259367329\",\n      \"city\": \"Redmond\",\n      \"name\": \"Domain Administrator\",\n      \"phone\": \"+1.4258828080\",\n      \"state\": \"WA\",\n      \"street\": \"One Microsoft Way,\",\n      \"company\": \"Microsoft Corporation\",\n      \"zip_code\": \"98052\",\n      \"country_code\": \"US\",\n      \"country_name\": \"United States\",\n      \"email_address\": \"domains@microsoft.com\"\n    },\n    \"administrative_contact\": {\n      \"fax\": \"+1.4259367329\",\n      \"city\": \"Redmond\",\n      \"name\": \"Domain Administrator\",\n      \"phone\": \"+1.4258828080\",\n      \"state\": \"WA\",\n      \"street\": \"One Microsoft Way,\",\n      \"company\": \"Microsoft Corporation\",\n      \"zip_code\": \"98052\",\n      \"country_code\": \"US\",\n      \"country_name\": \"United States\",\n      \"email_address\": \"domains@microsoft.com\"\n    }\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"13 seconds 180 ms\"\n}",
+                "operationTitle": "Get Whois Lookup",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "60",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": "\/api\/3\/workflow_groups\/74775fbb-bda6-477f-bc48-86da02b613a4",
+            "uuid": "7a0cbb60-8cef-4b5e-9ee1-20d156046ba4"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Monitored Domain Analysis",
+            "description": null,
+            "arguments": {
+                "_tmp": "{% set whois_dict = vars.steps.Get_Domain_Whois_Lookup.data %}\n{% set _ = vars.monitor_domain_whois_info.append({\"Domain Name\": whois_dict.get('domain_name'), \"Registrant Name\": (whois_dict.get('registrant_contact')).get('name'), \"Registrant Company\": (whois_dict.get('registrant_contact')).get('company'), \"Registrant City\": (whois_dict.get('registrant_contact')).get('city'), \"Registrant Country\": (whois_dict.get('registrant_contact')).get('country_name'), \"Registrant Email\": (whois_dict.get('registrant_contact')).get('email_address'), \"Registry IANA ID\": (whois_dict.get('domain_registrar')).get('iana_id'), \"Registry Name\": (whois_dict.get('domain_registrar')).get('registrar_name'), \"Registry Website\": (whois_dict.get('domain_registrar')).get('website_url'), \"Registry Email\": (whois_dict.get('domain_registrar')).get('email_address'), \"Whois Server\": whois_dict.get('whois_server'), \"Name Server\": whois_dict.get('name_servers'), \"Recent Update\": whois_dict.get('update_date'), \"Created Date\": whois_dict.get('create_date'), \"Expiration Date\": whois_dict.get('expiry_date'), \"Domain Subdomain Count\": vars.steps.Get_Domain_and_Subdomain_Info.data.domainsCount }) %}"
+            },
+            "status": null,
+            "top": "300",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": "\/api\/3\/workflow_groups\/74775fbb-bda6-477f-bc48-86da02b613a4",
+            "uuid": "98e3a2e7-85be-4c68-aae3-1d7a9c0996dc"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Get Potentially Squatting Domain Analysis",
+            "description": null,
+            "arguments": {
+                "__tmp": "{% if vars.steps.Fetch_Domain_Whois_Lookup.data.domain_registered == 'yes' %}{% set whois_dict = vars.steps.Fetch_Domain_Whois_Lookup.data %}\n{% set _ = vars.potentially_squatting_domain_whois_info.append({\"Domain Name\": whois_dict.get('domain_name'), \"Registrant Name\": (whois_dict.get('registrant_contact')).get('name'), \"Registrant Company\": (whois_dict.get('registrant_contact')).get('company'), \"Registrant City\": (whois_dict.get('registrant_contact')).get('city'), \"Registrant Country\": (whois_dict.get('registrant_contact')).get('country_name'), \"Registrant Email\": (whois_dict.get('registrant_contact')).get('email_address'), \"Registry IANA ID\": (whois_dict.get('domain_registrar')).get('iana_id'), \"Registry Name\": (whois_dict.get('domain_registrar')).get('registrar_name'), \"Registry Website\": (whois_dict.get('domain_registrar')).get('website_url'), \"Registry Email\": (whois_dict.get('domain_registrar')).get('email_address'), \"Whois Server\": whois_dict.get('whois_server'), \"Name Server\": whois_dict.get('name_servers'), \"Recent Update\": whois_dict.get('update_date'), \"Created Date\": whois_dict.get('create_date'), \"Expiration Date\": whois_dict.get('expiry_date'), \"Domain Subdomain Count\": vars.steps.Fetch_Domain_and_Subdomain_Information.data.domainsCount}) %}{% else %}{% set _ = vars.potentially_squatting_domain_whois_info.append({\"Domain Registered\": \"Domain Not Registered\"}) %}{% endif %}"
+            },
+            "status": null,
+            "top": "300",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
+            "group": "\/api\/3\/workflow_groups\/a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "uuid": "8e6055d9-6692-4601-bf4e-16f8d3ce0893"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Is Domain Certificate and Website Brand Abuse",
+            "description": null,
+            "arguments": {
+                "type": "InputBased",
+                "input": {
+                    "schema": {
+                        "title": "Review Suspicious Domain's Certificate and Brand Details",
+                        "description": "###### **Review Certificate Summary for \"{{vars.alertSourceData.similar_domain}}\" Domain**\n{{vars.steps.Create_Domain_Certificate_HTML_Table.data}}\n\n\n##### **Review below screenshot for analysing website brand**\n<br>\n*Click image to open the source image link*\n{{vars.steps.Compute_Url_Scan_Summary.data['formatted_string']}}",
+                        "inputVariables": [
+                            {
+                                "name": "observedAnalysis",
+                                "type": "string",
+                                "label": "Provide the observed analysis for above \"Domain Certificate Summary\" and \"Website Brand Screenshot\"",
+                                "title": "Rich Text (Markdown)",
+                                "usable": true,
+                                "tooltip": "",
+                                "dataType": "text",
+                                "formType": "richtext",
+                                "required": true,
+                                "_expanded": true,
+                                "mmdUpdate": true,
+                                "collection": false,
+                                "searchable": true,
+                                "templateUrl": "app\/components\/form\/fields\/markdownEditor.html",
+                                "_nameTouched": true,
+                                "defaultValue": null,
+                                "_previousName": "",
+                                "playbookField": true,
+                                "lengthConstraint": true,
+                                "allowedEncryption": true,
+                                "allowedGridColumn": true,
+                                "jinjaExpressionView": true,
+                                "useRecordFieldDefault": false
+                            }
+                        ]
+                    }
+                },
+                "record": "{{ vars.input.records[0][\"@id\"] }}",
+                "agent_id": null,
+                "resources": "alerts",
+                "owner_detail": {
+                    "isAssigned": false
+                },
+                "isRecordLinked": true,
+                "step_variables": [],
+                "response_mapping": {
+                    "options": [
+                        {
+                            "option": "Confirm Domain Squatting",
+                            "primary": true,
+                            "step_iri": "\/api\/3\/workflow_steps\/0c0e0981-a8ae-487a-8b7d-fef9a9f21e32"
+                        },
+                        {
+                            "option": "Continue Monitor Domain",
+                            "step_iri": "\/api\/3\/workflow_steps\/a6aa42be-179b-42bf-9f56-384e9a9e9cbc"
+                        }
+                    ],
+                    "duplicateOption": false
+                },
+                "email_notification": {
+                    "enabled": false,
+                    "smtpParameters": []
+                },
+                "inline_channel_list": [],
+                "external_channel_list": [],
+                "unauthenticated_input": false
+            },
+            "status": null,
+            "top": "380",
+            "left": "40",
+            "stepType": "\/api\/3\/workflow_step_types\/fc04082a-d7dc-4299-96fb-6837b1baa0fe",
+            "group": "\/api\/3\/workflow_groups\/11349599-2c77-400f-86b5-9a359b09d8f4",
+            "uuid": "58149ee4-069b-4dc3-a6f5-60f41702b63c"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Is Domain Owned By Company",
+            "description": null,
+            "arguments": {
+                "conditions": [
+                    {
+                        "option": "No",
+                        "step_iri": "\/api\/3\/workflow_steps\/32c5a884-2866-4e9f-9f3b-53eb5458445e",
+                        "condition": "{{ ((vars.is_whois_matched | unique) | length) == 1 and (vars.is_whois_matched | unique)[0] == 'false' }}",
+                        "step_name": "Resolved Potentially Squatting Domain Name"
+                    },
+                    {
+                        "option": "Yes",
+                        "default": true,
+                        "step_iri": "\/api\/3\/workflow_steps\/d881a48b-c9ed-47f8-8bd0-9816a6fca1bd",
+                        "step_name": "Close Alert As False Positive"
+                    }
+                ]
+            },
+            "status": null,
+            "top": "1760",
+            "left": "420",
+            "stepType": "\/api\/3\/workflow_step_types\/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+            "group": null,
+            "uuid": "54d7fa93-0fb8-45ce-bee9-7bc2f226fa75"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Is Domain Resolved",
+            "description": null,
+            "arguments": {
+                "conditions": [
+                    {
+                        "option": "Yes",
+                        "step_iri": "\/api\/3\/workflow_steps\/9536d693-cf8f-4cfe-a6e6-ab818d889b39",
+                        "condition": "{{ vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords | length > 0 }}",
+                        "step_name": "Get Domain SHA256"
+                    },
+                    {
+                        "option": "No",
+                        "default": true,
+                        "step_iri": "\/api\/3\/workflow_steps\/7420f6f7-e33e-4b15-9660-91892093940c",
+                        "step_name": "Analyst Confirm for Domain Typo Squatting"
+                    }
+                ]
+            },
+            "status": null,
+            "top": "2027",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/12254cf5-5db7-4b1a-8cb1-3af081924b28",
+            "group": null,
+            "uuid": "3999281b-20f9-4de2-8350-b6b8b9583606"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Mark Alert as Investigating",
+            "description": null,
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Initiating Typo Squatting Domain Investigation<\/p>",
+                    "records": "{{vars.alertIRI}}"
+                },
+                "resource": {
+                    "status": "\/api\/3\/picklists\/758925e7-629c-46d8-89db-fb36f5fbe88a"
+                },
+                "operation": "Append",
+                "collection": "{{vars.alertIRI}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/alerts",
+                "fieldOperation": [],
+                "step_variables": []
+            },
+            "status": null,
+            "top": "300",
+            "left": "425",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": null,
+            "uuid": "76a4a7a1-0bc3-445d-affa-4cc410c1ec11"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Monitor Domain for Future Abuse",
+            "description": "Create a manual task to monitor the domain for future abuse",
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "content": "<p>Creating the <a title=\"Task #{{vars.result.id}} - {{vars.result.name}}\" href=\"\/modules\/view-panel\/tasks\/{{vars.result.uuid}}\">Task #{{vars.result.id}} - {{vars.result.name}}<\/a> to monitor the<strong>&nbsp;{{vars.alertSourceData.similar_domain}}<\/strong> domain for future abuse.<\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11"
+                },
+                "resource": {
+                    "name": "Monitor domain for future abuse - {{vars.alertSourceData['similar_domain']}}",
+                    "type": "\/api\/3\/picklists\/62322a54-a069-4f74-a917-3d864f24524a",
+                    "__link": {
+                        "alerts": "{{vars.alertIRI}}"
+                    },
+                    "status": "\/api\/3\/picklists\/7669725a-28cc-4b19-98a3-9ca71e0f88f4",
+                    "tenant": "{{vars.input.records[0].tenant['@id']}}",
+                    "priority": "{% if vars.input.records[0].severity.itemValue == 'Critical' %}{{\"TaskPriority\" | picklist(\"Urgent\", \"@id\")}}{% else %}{{\"TaskPriority\" | picklist(\"High\", \"@id\")}}{% endif %}",
+                    "__replace": "",
+                    "recordTags": [
+                        "\/api\/3\/tags\/FortiRecon",
+                        "\/api\/3\/tags\/Typo Squatting"
+                    ],
+                    "description": "Monitor similar domain for future abuse\n\n{{vars.input.records[0].description}}",
+                    "assignedOnDate": "{{arrow.utcnow().int_timestamp}}",
+                    "assignedToPerson": "{{vars.input.records[0].assignedTo['@id']}}"
+                },
+                "operation": "Append",
+                "collection": "\/api\/3\/tasks",
+                "__recommend": [],
+                "fieldOperation": {
+                    "recordTags": "Overwrite"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "2840",
+            "left": "420",
+            "stepType": "\/api\/3\/workflow_step_types\/2597053c-e718-44b4-8394-4d40fe26d357",
+            "group": null,
+            "uuid": "a6aa42be-179b-42bf-9f56-384e9a9e9cbc"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Resolved Potentially Squatting Domain Name",
+            "description": null,
+            "arguments": {
+                "name": "Whois Freaks",
+                "config": "99b6bf0e-f8b4-4b01-875c-242ce58b3dde",
+                "params": {
+                    "type": [
+                        "A"
+                    ],
+                    "domainName": "{{vars.alertSourceData.similar_domain}}"
+                },
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Monitored Domain and Potentially Squatting Domain are not owned by the same company \"<strong>{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}\"<\/strong>.<\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
+                },
+                "version": "1.0.0",
+                "connector": "whois-freaks",
+                "operation": "dns_lookup",
+                "operationTitle": "Get DNS Lookup",
+                "pickFromTenant": false,
+                "step_variables": []
+            },
+            "status": null,
+            "top": "1892",
+            "left": "600",
+            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
+            "group": null,
+            "uuid": "32c5a884-2866-4e9f-9f3b-53eb5458445e"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Start",
+            "description": null,
+            "arguments": {
+                "route": "1c9ff205-6eca-40cb-8385-9e4f63c8b0b5",
+                "title": "Investigate Typo Squatting Domain",
+                "resources": [
+                    "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                    "input": {
+                        "params": [],
+                        "records": "{{vars.input.records}}"
+                    }
+                },
+                "_promptexpanded": true,
+                "displayConditions": {
+                    "alerts": {
+                        "sort": [],
+                        "limit": 30,
+                        "logic": "AND",
+                        "filters": [
+                            {
+                                "type": "primitive",
+                                "field": "source",
+                                "value": "FortiRecon Brand Protection",
+                                "operator": "eq",
+                                "_operator": "eq"
+                            },
+                            {
+                                "type": "object",
+                                "field": "status",
+                                "value": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232",
+                                "_value": {
+                                    "@id": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232",
+                                    "itemValue": "Closed"
+                                },
+                                "operator": "neq"
+                            }
+                        ]
+                    }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": false,
+                "singleRecordExecution": true
+            },
+            "status": null,
+            "top": "30",
+            "left": "425",
+            "stepType": "\/api\/3\/workflow_step_types\/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+            "group": null,
+            "uuid": "1d905cf1-2a11-4151-a449-8c72b49d59f9"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Update Monitored Domain Indicators",
+            "description": null,
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Monitored <a title=\"Domain #{{vars.steps.Find_Monitored_Domain[0].id}} - {{vars.alertSourceData.similar_domain}}\" href=\"\/modules\/view-panel\/indicators\/{{vars.steps.Find_Monitored_Domain[0].uuid}}\"> Domain #{{vars.steps.Find_Monitored_Domain[0].id}} - {{vars.alertSourceData.similar_domain}}<\/a> Whois summary is populated to the associated indicator.<\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/ddb65dc1-b093-4a12-9841-c07f4bd709cb"
+                },
+                "resource": {
+                    "description": "{{vars.steps.Find_Monitored_Domain[0].description}}\n\n<table class=\"no-border\">\n    <tr>\n        <th colspan=\"1\" class=\"no-background padding-0\">\n            <div class=\"font-size-11 ng-binding padding-bottom-sm\">\n                <h4 style=\"color: orange;\"\n                    class=\"body-default-bgcolor margin-bottom-0 padding-bottom-md padding-left-md padding-top-md text-align-left\">\n                    Monitored Domain Whois Summary<\/h4>\n            <\/div>\n        <\/th>\n    <\/tr>\n    <tr class=\"solid-border\">\n        <td style=\"vertical-align: top;\">\n            <div>{{vars.steps.Create_Monitored_Domain_Whois_HTML_Table.data}}<\/div>\n        <\/td>\n    <\/tr>\n<\/table>"
+                },
+                "operation": "Append",
+                "collection": "{{vars.steps.Find_Monitored_Domain[0]['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/indicators",
+                "fieldOperation": {
+                    "recordTags": "Append"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "720",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": "\/api\/3\/workflow_groups\/74775fbb-bda6-477f-bc48-86da02b613a4",
+            "uuid": "9987f2c4-95cd-4501-b523-8e5fb5549e04"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Update Potentially Squatting Indicators",
+            "description": null,
+            "arguments": {
+                "message": {
+                    "tags": [],
+                    "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
+                    "tenant": "",
+                    "thread": false,
+                    "content": "<p>Potentially Squatting <a title=\"Domain #{{vars.steps.Find_Potentially_Squatting_Domain[0].id}} - {{vars.alertSourceData.similar_domain}}\" href=\"\/modules\/view-panel\/indicators\/{{vars.steps.Find_Potentially_Squatting_Domain[0].uuid}}\">Domain #{{vars.steps.Find_Potentially_Squatting_Domain[0].id}} - {{vars.alertSourceData.similar_domain}}<\/a> Whois summary is populated to the associated indicator.<\/p>",
+                    "records": "{{vars.alertIRI}}",
+                    "parentstepid": "\/api\/3\/workflow_steps\/21740abe-7024-42c4-b69e-5361b4da27ff"
+                },
+                "resource": {
+                    "description": "{{vars.steps.Find_Potentially_Squatting_Domain[0].description}}\n\n<table class=\"no-border\">\n    <tr>\n        <th colspan=\"1\" class=\"no-background padding-0\">\n            <div class=\"font-size-11 ng-binding padding-bottom-sm\">\n                <h4 style=\"color: orange;\"\n                    class=\"body-default-bgcolor margin-bottom-0 padding-bottom-md padding-left-md padding-top-md text-align-left\">\n                    Potentially Squatting Domain Whois Summary<\/h4>\n            <\/div>\n        <\/th>\n    <\/tr>\n    <tr class=\"solid-border\">\n        <td style=\"vertical-align: top;\">\n            <div>{{vars.steps.Create_Potentially_Squatting_Whois_HTML_Table.data}}<\/div>\n        <\/td>\n    <\/tr>\n\n"
+                },
+                "operation": "Append",
+                "collection": "{{vars.steps.Find_Potentially_Squatting_Domain[0]['@id']}}",
+                "__recommend": [],
+                "collectionType": "\/api\/3\/indicators",
+                "fieldOperation": {
+                    "recordTags": "Append"
+                },
+                "step_variables": []
+            },
+            "status": null,
+            "top": "720",
+            "left": "60",
+            "stepType": "\/api\/3\/workflow_step_types\/b593663d-7d13-40ce-a3a3-96dece928722",
+            "group": "\/api\/3\/workflow_groups\/a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "uuid": "cccb41b2-126f-4c04-8de3-2550e9ebb0a1"
+        },
+        {
+            "@type": "WorkflowStep",
+            "name": "Wait To Complete Scan",
+            "description": null,
+            "arguments": {
+                "rule": {
+                    "actions": [
+                        {
+                            "type": "resume_playbook",
+                            "enabled": true,
+                            "channel_uuid": "e2ce87c2-c55a-11ec-9d64-0242ac120002"
+                        }
+                    ],
+                    "is_active": true,
+                    "event_source": "crudhub"
+                },
+                "type": "TimeBased",
+                "delay": {
+                    "days": 0,
+                    "hours": 0,
+                    "weeks": 0,
+                    "minutes": 0,
+                    "seconds": 10
+                }
+            },
+            "status": null,
+            "top": "160",
+            "left": "40",
+            "stepType": "\/api\/3\/workflow_step_types\/6832e556-b9c7-497a-babe-feda3bd27dbf",
+            "group": "\/api\/3\/workflow_groups\/11349599-2c77-400f-86b5-9a359b09d8f4",
+            "uuid": "632d9076-f059-4bd0-97a2-31aa1222eb73"
+        }
+    ],
+    "routes": [
+        {
+            "@type": "WorkflowRoute",
+            "name": "Add Not for Request Approved -> Block Malicious Indicators",
+            "targetStep": "\/api\/3\/workflow_steps\/ec49c248-7f01-4ac2-aa66-3bbf0a401f78",
+            "sourceStep": "\/api\/3\/workflow_steps\/55850c08-ac6e-4e1b-a294-8b4274d11fe3",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "30a4b648-757a-4696-b098-42c6b1a33f88"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Analyst Confirm for Domain Typo Squatting -> Create Task for Takedown Request",
+            "targetStep": "\/api\/3\/workflow_steps\/0c0e0981-a8ae-487a-8b7d-fef9a9f21e32",
+            "sourceStep": "\/api\/3\/workflow_steps\/7420f6f7-e33e-4b15-9660-91892093940c",
+            "label": "Confirm Domain Squatting",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "9abe4521-8976-4600-8c84-86070d7bdb81"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Analyst Confirm for Domain Typo Squatting -> Monitor Domain for Future Abuse",
+            "targetStep": "\/api\/3\/workflow_steps\/a6aa42be-179b-42bf-9f56-384e9a9e9cbc",
+            "sourceStep": "\/api\/3\/workflow_steps\/7420f6f7-e33e-4b15-9660-91892093940c",
+            "label": "Continue Monitor Domain",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "f9ba68ef-c100-482c-b5ef-8559073b92f1"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Approval to Block Malicious Indicators -> Add Not for Request Approved",
+            "targetStep": "\/api\/3\/workflow_steps\/55850c08-ac6e-4e1b-a294-8b4274d11fe3",
+            "sourceStep": "\/api\/3\/workflow_steps\/6696e422-c6fd-4174-ad6a-7b008981b6b0",
+            "label": "Yes",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "6a5edfd6-ea82-4877-b16f-33584acc9a0a"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Block Malicious Indicators -> Add Phishing Tag to Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/71955cbc-a94c-4de3-baa9-79e2eed371f6",
+            "sourceStep": "\/api\/3\/workflow_steps\/ec49c248-7f01-4ac2-aa66-3bbf0a401f78",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "72d8f232-0473-4a2c-9ef1-9f91d3322dd7"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Check Website Brand -> Wait",
+            "targetStep": "\/api\/3\/workflow_steps\/632d9076-f059-4bd0-97a2-31aa1222eb73",
+            "sourceStep": "\/api\/3\/workflow_steps\/0e242fb6-90b9-4ee6-b058-1a283ee0f8d1",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "473c9685-b5c3-45e2-bcc9-f8f93a0a0a06"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Compare Monitor and Potentially Squatting Domain -> Create Whois Compared Data HTML Table",
+            "targetStep": "\/api\/3\/workflow_steps\/f3ea9237-5a7a-461d-a469-b698a7b9eb56",
+            "sourceStep": "\/api\/3\/workflow_steps\/6696ac12-4b34-4281-9628-29b8daf27f54",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "89459899-1341-4e6e-8270-592d2a124d56"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Compute Url Scan Summary -> Is Website Brand Abuse",
+            "targetStep": "\/api\/3\/workflow_steps\/58149ee4-069b-4dc3-a6f5-60f41702b63c",
+            "sourceStep": "\/api\/3\/workflow_steps\/ededbfc0-106a-41d4-873d-6cd7f702627f",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ed11f9f1-5a41-48e4-9f12-061a84a7333c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Configuration -> Mark Alert as Investigating",
+            "targetStep": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11",
+            "sourceStep": "\/api\/3\/workflow_steps\/f220be00-15a5-4d8f-a015-f714b31d0219",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "53228f7c-7b6b-4462-a316-e12f57c933e1"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Comparison Whois HTML Table -> Create Whois Info Comment",
+            "targetStep": "\/api\/3\/workflow_steps\/e3b96b1e-85d5-430c-8246-ca134072463f",
+            "sourceStep": "\/api\/3\/workflow_steps\/f3ea9237-5a7a-461d-a469-b698a7b9eb56",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "5b0e1e7e-2d09-4591-8712-7dab03c93db8"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Domain Certificate HTML Table -> Check Website Brand",
+            "targetStep": "\/api\/3\/workflow_steps\/0e242fb6-90b9-4ee6-b058-1a283ee0f8d1",
+            "sourceStep": "\/api\/3\/workflow_steps\/7397c492-ccc3-4db5-a90f-d3921f1317a8",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "2c5e3ede-2a99-43dd-9c7e-9d2d3df8a4ee"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Monitored Domain Whois HTML Table -> Copy of Find Correlated Domain",
+            "targetStep": "\/api\/3\/workflow_steps\/0ea4488d-d8b2-47a2-ad73-c5f81031d3d2",
+            "sourceStep": "\/api\/3\/workflow_steps\/6b2dce9c-1f35-424a-95eb-3d3dd8c8591b",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ea2e8c15-e506-4043-9cae-17386dd3e0cc"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Potentially Squatting Whois HTML Table -> Find Correlated Domain",
+            "targetStep": "\/api\/3\/workflow_steps\/08d8c01d-d0e2-4f7c-b110-5c58499a7400",
+            "sourceStep": "\/api\/3\/workflow_steps\/5ead8f5b-9e6c-40af-b918-30c8a19763b6",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "81a0efc4-ee71-447e-8128-4e9bebbb0410"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Task for Takedown Request -> Approval to Block Malicious Indicators",
+            "targetStep": "\/api\/3\/workflow_steps\/6696e422-c6fd-4174-ad6a-7b008981b6b0",
+            "sourceStep": "\/api\/3\/workflow_steps\/0c0e0981-a8ae-487a-8b7d-fef9a9f21e32",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e5d719c7-7cdc-4072-bc28-48ebbf835b46"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Create Whois Info Comment -> Is Domain Owned By Company",
+            "targetStep": "\/api\/3\/workflow_steps\/54d7fa93-0fb8-45ce-bee9-7bc2f226fa75",
+            "sourceStep": "\/api\/3\/workflow_steps\/e3b96b1e-85d5-430c-8246-ca134072463f",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "a6f3159b-2b2a-44ca-811a-561183c5311a"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Fetch Domain Whois Lookup -> Fetch Potentially Squatting Domain and Subdomain Information",
+            "targetStep": "\/api\/3\/workflow_steps\/21740abe-7024-42c4-b69e-5361b4da27ff",
+            "sourceStep": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "d0f92d62-1f26-45a8-9d34-3fab09148607"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Fetch Monitored Domain and Subdomain Information -> Monitored Domain Analysis",
+            "targetStep": "\/api\/3\/workflow_steps\/98e3a2e7-85be-4c68-aae3-1d7a9c0996dc",
+            "sourceStep": "\/api\/3\/workflow_steps\/ddb65dc1-b093-4a12-9841-c07f4bd709cb",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "32f68765-b920-4133-a8ff-fba6f3cf2003"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Fetch Potentially Squatting Domain and Subdomain Information -> Get Potentially Squatting Domain Analysis",
+            "targetStep": "\/api\/3\/workflow_steps\/8e6055d9-6692-4601-bf4e-16f8d3ce0893",
+            "sourceStep": "\/api\/3\/workflow_steps\/21740abe-7024-42c4-b69e-5361b4da27ff",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "9ae50ef3-e092-414a-8e43-a07e5da76c9a"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Find Correlated Doamin -> Update Indicator",
+            "targetStep": "\/api\/3\/workflow_steps\/cccb41b2-126f-4c04-8de3-2550e9ebb0a1",
+            "sourceStep": "\/api\/3\/workflow_steps\/08d8c01d-d0e2-4f7c-b110-5c58499a7400",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "cecc3a4b-5188-4023-afe3-0ab0332b990a"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Find Monitored Domain -> Copy of Update Potentially Squatting Indicators",
+            "targetStep": "\/api\/3\/workflow_steps\/9987f2c4-95cd-4501-b523-8e5fb5549e04",
+            "sourceStep": "\/api\/3\/workflow_steps\/0ea4488d-d8b2-47a2-ad73-c5f81031d3d2",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "d5fb8d0e-d720-4e5c-b920-3e6f34b0fb29"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Domain Certificate -> Copy of Create Whois Compared Data HTML Table",
+            "targetStep": "\/api\/3\/workflow_steps\/7397c492-ccc3-4db5-a90f-d3921f1317a8",
+            "sourceStep": "\/api\/3\/workflow_steps\/cd5649be-f033-47c1-9533-fff41cf9edbb",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e8a31f68-9bd4-47b9-9b24-87df9fe2cd29"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Domain SHA256 -> Get Domain Certificate",
+            "targetStep": "\/api\/3\/workflow_steps\/cd5649be-f033-47c1-9533-fff41cf9edbb",
+            "sourceStep": "\/api\/3\/workflow_steps\/9536d693-cf8f-4cfe-a6e6-ab818d889b39",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "dc5569a5-9829-4c56-bfdb-2b6cd04a5f52"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Domain Whois Lookup -> Get Domain and Subdomain Info",
+            "targetStep": "\/api\/3\/workflow_steps\/ddb65dc1-b093-4a12-9841-c07f4bd709cb",
+            "sourceStep": "\/api\/3\/workflow_steps\/7a0cbb60-8cef-4b5e-9ee1-20d156046ba4",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "8a3599c0-c9f7-4b46-8b73-2f405450a52c"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Get Potentially Squatting Domain Analysis -> Create Potentially Squatting Whois HTML Table",
+            "targetStep": "\/api\/3\/workflow_steps\/5ead8f5b-9e6c-40af-b918-30c8a19763b6",
+            "sourceStep": "\/api\/3\/workflow_steps\/8e6055d9-6692-4601-bf4e-16f8d3ce0893",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "3c73ab3a-8160-4eb3-bd8f-ea310fa7c864"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is Domain Certificate and Website Brand Abuse -> Copy of Create Task for Takedown Request",
+            "targetStep": "\/api\/3\/workflow_steps\/a6aa42be-179b-42bf-9f56-384e9a9e9cbc",
+            "sourceStep": "\/api\/3\/workflow_steps\/58149ee4-069b-4dc3-a6f5-60f41702b63c",
+            "label": "Continue Monitor Domain",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "1968fd6c-fdc3-4bb2-8675-691d678ee09b"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is Domain Owned By Company -> Close Alert",
+            "targetStep": "\/api\/3\/workflow_steps\/d881a48b-c9ed-47f8-8bd0-9816a6fca1bd",
+            "sourceStep": "\/api\/3\/workflow_steps\/54d7fa93-0fb8-45ce-bee9-7bc2f226fa75",
+            "label": "Yes",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e48155b2-3dc2-4d1b-815b-f949b254a50b"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is Domain Owned By Company -> Resolved Potentially Squatting Domain Name",
+            "targetStep": "\/api\/3\/workflow_steps\/32c5a884-2866-4e9f-9f3b-53eb5458445e",
+            "sourceStep": "\/api\/3\/workflow_steps\/54d7fa93-0fb8-45ce-bee9-7bc2f226fa75",
+            "label": "No",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "ba2bef40-be99-49d3-baba-8e8ea94cb909"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is Domain Resolved -> Analyst Confirm for Domain Typo Squatting",
+            "targetStep": "\/api\/3\/workflow_steps\/7420f6f7-e33e-4b15-9660-91892093940c",
+            "sourceStep": "\/api\/3\/workflow_steps\/3999281b-20f9-4de2-8350-b6b8b9583606",
+            "label": "No",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "b64522af-865a-4de5-bfca-be156c95ef46"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is Domain Resolved -> Get Domain SHA256",
+            "targetStep": "\/api\/3\/workflow_steps\/9536d693-cf8f-4cfe-a6e6-ab818d889b39",
+            "sourceStep": "\/api\/3\/workflow_steps\/3999281b-20f9-4de2-8350-b6b8b9583606",
+            "label": "Yes",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "5240d85a-0223-41c2-9247-415141f3bb33"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Is Website Brand Abuse -> Create Task for Takedown Request",
+            "targetStep": "\/api\/3\/workflow_steps\/0c0e0981-a8ae-487a-8b7d-fef9a9f21e32",
+            "sourceStep": "\/api\/3\/workflow_steps\/58149ee4-069b-4dc3-a6f5-60f41702b63c",
+            "label": "Confirm Domain Squatting",
+            "isExecuted": false,
+            "group": null,
+            "uuid": "bda0bad6-136f-45d6-b894-c91c71c17672"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Mark Alert as Investigating -> aa",
+            "targetStep": "\/api\/3\/workflow_steps\/7a0cbb60-8cef-4b5e-9ee1-20d156046ba4",
+            "sourceStep": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "bdd6e7dc-c50f-4af2-82a4-d84fa6c1b66e"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Mark Alert as Investigating -> Copy of Get Original Domain Lookup",
+            "targetStep": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea",
+            "sourceStep": "\/api\/3\/workflow_steps\/76a4a7a1-0bc3-445d-affa-4cc410c1ec11",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "e57afe24-9dc2-4156-94be-a4784ba37288"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Monitored Domain Analysis -> Create Whois Freaks HTML Table",
+            "targetStep": "\/api\/3\/workflow_steps\/6b2dce9c-1f35-424a-95eb-3d3dd8c8591b",
+            "sourceStep": "\/api\/3\/workflow_steps\/98e3a2e7-85be-4c68-aae3-1d7a9c0996dc",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "94080fea-bece-4773-96a0-f4b28f167989"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Resolved Potentially Squatting Domain Name -> Is Domain Resolved",
+            "targetStep": "\/api\/3\/workflow_steps\/3999281b-20f9-4de2-8350-b6b8b9583606",
+            "sourceStep": "\/api\/3\/workflow_steps\/32c5a884-2866-4e9f-9f3b-53eb5458445e",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "8d38a668-0143-4837-ba7e-51224be7fbb3"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Start -> Configuration",
+            "targetStep": "\/api\/3\/workflow_steps\/f220be00-15a5-4d8f-a015-f714b31d0219",
+            "sourceStep": "\/api\/3\/workflow_steps\/1d905cf1-2a11-4151-a449-8c72b49d59f9",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "30917ff1-3996-4904-b9db-e369b797940a"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Update Monitored Domain Indicators -> Compare Monitor and Potentially Squatting Domain",
+            "targetStep": "\/api\/3\/workflow_steps\/6696ac12-4b34-4281-9628-29b8daf27f54",
+            "sourceStep": "\/api\/3\/workflow_steps\/9987f2c4-95cd-4501-b523-8e5fb5549e04",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "44c4bae4-7a0a-49c2-b046-9f3e0a7430f9"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Update Potentially Squatting Indicators -> Compare Monitor and Potentially Squatting Domain",
+            "targetStep": "\/api\/3\/workflow_steps\/6696ac12-4b34-4281-9628-29b8daf27f54",
+            "sourceStep": "\/api\/3\/workflow_steps\/cccb41b2-126f-4c04-8de3-2550e9ebb0a1",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "142e7ae6-e35f-4c1e-bcfd-c106fc8d9de6"
+        },
+        {
+            "@type": "WorkflowRoute",
+            "name": "Wait -> Compute Url Scan Summary",
+            "targetStep": "\/api\/3\/workflow_steps\/ededbfc0-106a-41d4-873d-6cd7f702627f",
+            "sourceStep": "\/api\/3\/workflow_steps\/632d9076-f059-4bd0-97a2-31aa1222eb73",
+            "label": null,
+            "isExecuted": false,
+            "group": null,
+            "uuid": "6f67566f-0c90-4114-8c03-a9fd9d938a72"
+        }
+    ],
+    "groups": [
+        {
+            "@type": "WorkflowGroup",
+            "name": "Check Website Brand Abuse",
+            "description": "Check Website Brand Abuse (using  urlscan.io)",
+            "type": "block",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": false,
+            "metadata": [],
+            "reusable": false,
+            "top": "2620",
+            "left": "760",
+            "height": "485",
+            "width": "325",
+            "uuid": "11349599-2c77-400f-86b5-9a359b09d8f4",
+            "recordTags": []
+        },
+        {
+            "@type": "WorkflowGroup",
+            "name": "Compare Monitor and Potentially Squatting Domain Whois Info",
+            "description": "Compare Monitor and Potentially Squatting Domain Whois Info",
+            "type": "block",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": false,
+            "metadata": [],
+            "reusable": false,
+            "top": "1300",
+            "left": "400",
+            "height": "437",
+            "width": "291",
+            "uuid": "350efc2e-b420-4738-b1fc-582f53d1ecbd",
+            "recordTags": []
+        },
+        {
+            "@type": "WorkflowGroup",
+            "name": "Monitored Domain and Sub-Domain Whois Information",
+            "description": "Get Monitored Domain Whois Information using Whois Freaks, Sub-Domain using Whois XML API",
+            "type": "block",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": false,
+            "metadata": [],
+            "reusable": false,
+            "top": "440",
+            "left": "160",
+            "height": "842",
+            "width": "375",
+            "uuid": "74775fbb-bda6-477f-bc48-86da02b613a4",
+            "recordTags": []
+        },
+        {
+            "@type": "WorkflowGroup",
+            "name": "Potentially Squatting Domain and Sub-Domain Whois Information",
+            "description": "Get Potentially Squatting Domain Whois Information using Whois Freaks, Sub-Domain using Whois XML API",
+            "type": "block",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": false,
+            "metadata": [],
+            "reusable": false,
+            "top": "440",
+            "left": "560",
+            "height": "842",
+            "width": "375",
+            "uuid": "a28f81b5-6841-4f8e-8f6f-ccd3e76b2853",
+            "recordTags": []
+        },
+        {
+            "@type": "WorkflowGroup",
+            "name": "Research Domain Certificate Using Censys",
+            "description": "Research potentially squatting domain certificate using Censys",
+            "type": "block",
+            "isCollapsed": false,
+            "hasTriggerStep": false,
+            "hideInLogs": false,
+            "metadata": [],
+            "reusable": false,
+            "top": "2160",
+            "left": "780",
+            "height": "384",
+            "width": "266",
+            "uuid": "77736b3c-7464-4310-9bba-9421a97180e4",
+            "recordTags": []
+        }
+    ],
+    "priority": "\/api\/3\/picklists\/2b563c61-ae2c-41c0-a85a-c9709585e3f2",
+    "uuid": "6568eeb1-1f32-4765-80fc-9bf2c632cecb",
+    "owners": [],
+    "isPrivate": false,
+    "deletedAt": null,
+    "recordTags": [
+        "ManualTrigger",
+        "Typo Squatting"
+    ]
+}
