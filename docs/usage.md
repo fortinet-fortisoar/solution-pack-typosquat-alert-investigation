@@ -28,7 +28,8 @@ Navigate to the demo alert and note the following:
 
 - The response playbook `Investigate High Risk Typo Squatting Domain Response` runs by selecting the Typo Squat alert record. Below are the *flowchart* of the this playbook
 
-    ![Typo Domain Alert](./res/Typo%20Squat%20Domain.png)
+    |![Typo Domain Alert](./res/Typo-Squat-Domain.png)|
+    |:---------------------------------------------------:|
 
 | [Installation](./docs/setup.md#installation) | [Configuration](./docs/setup.md#configuration) | [Contents](./docs/contents.md) |
 |--------------------------------------------|----------------------------------------------|------------------------|
