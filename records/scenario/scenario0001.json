@@ -1,0 +1,31 @@
+[
+    {
+        "@type": "Scenario",
+        "configuration": null,
+        "title": "Typo Squatting Domain Detected",
+        "description": "FortiRecon Brand Protection detects a typo squatted domain whose severity score is **High** <br>\nObserve the following\n\n* Reported Information (Typo Domain, Original Domain, Severity Score and Status) is presented as a handy reference\n* On receiving information from FortiRecon related to Typo Squatting possibility, High Risk Typo Domain Response Playbook activates and creates manual tasks to raise typo domain takedown request.",
+        "steps": {
+            "Steps": [
+                {
+                    "name": "High Risk Typo Domain Response",
+                    "type": "executePlaybook",
+                    "playbookIRI": "\/api\/3\/workflows\/7eda9a72-fe25-4404-b62f-150ab3ebe4b4",
+                    "preCreateMessage": "Creating demo alert record for newly found high risk typo domain",
+                    "postCreateMessage": "",
+                    "waitTimeforNextStep": "0"
+                }
+            ]
+        },
+        "createdAlertsID": null,
+        "uuid": "a269ba67-5a68-412b-adac-31b4d3991ae1",
+        "createUser": "\/api\/3\/people\/3451141c-bac6-467c-8d72-85e0fab569ce",
+        "createDate": 1675078960.466311,
+        "modifyUser": "\/api\/3\/appliances\/57545210-2adc-472b-a24f-2df6ee8dfe63",
+        "modifyDate": 1688376931.607544,
+        "id": 1,
+        "recordTags": [
+            "FortiRecon",
+            "Brand Protection"
+        ]
+    }
+]

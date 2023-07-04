@@ -1,0 +1,11 @@
+{
+    "@context": "\/api\/3\/contexts\/WorkflowCollection",
+    "@type": "WorkflowCollection",
+    "name": "02 - Use Case - Typosquat Alert Investigation",
+    "description": null,
+    "visible": true,
+    "image": null,
+    "uuid": "d796b91e-0878-4a44-9e4b-3d8d0dcded31",
+    "deletedAt": null,
+    "recordTags": []
+}
