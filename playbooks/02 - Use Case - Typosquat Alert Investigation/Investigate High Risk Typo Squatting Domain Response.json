@@ -208,12 +208,14 @@
                     "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
                     "tenant": "",
                     "thread": false,
-                    "content": "<p>Monitored Domain and Potentially Squatting Domain are owned by the same company \"<strong>{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}\"<\/strong>.<\/p>\n<p>&nbsp;<\/p>\n<p><strong>Close Alert as False Positive<\/strong><\/p>",
+                    "content": "<p>Monitored Domain and Potentially Squatting Domain are owned by the same company \"<strong>{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}\"<\/strong>.<\/p>\n<p>&nbsp;<\/p>\n<p><strong>Closed Alert as False Positive<\/strong><\/p>",
                     "records": "{{vars.alertIRI}}",
                     "parentstepid": "\/api\/3\/workflow_steps\/9b533589-dcbb-476f-ab64-bb030b5f93ea"
                 },
                 "resource": {
-                    "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232"
+                    "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232",
+                    "closureNotes": "Monitored Domain and Potentially Squatting Domain are owned by the same company \"**{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}**\".",
+                    "closureReason": "\/api\/3\/picklists\/2ab3e8e9-8cd9-4641-8400-a18a4e8a2da8"
                 },
                 "operation": "Append",
                 "collection": "{{vars.alertIRI}}",
@@ -238,7 +240,7 @@
                     "tags": [],
                     "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
                     "tenant": "",
-                    "content": "<p>{% if vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords | length %}<\/p>\n<p>Malicious certificate and website brand found, for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span style=\"background: #ba6204; color: #fff;\" class=\"badge badge-pill badge-danger\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p>{% else %}<\/p>\n<p>IP Address is not resolved for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span style=\"background: #ba6204; color: #fff;\" class=\"badge badge-pill badge-danger\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p><strong>{% endif %}<\/strong><\/p>\n<p><strong>Close Alert as True Positive<\/strong><\/p>",
+                    "content": "<p>{% if vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords | length %}<\/p>\n<p>Malicious certificate and website brand found, for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span class=\"badge badge-pill badge-danger\" style=\"background: #ba6204; color: #fff;\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p>{% else %}<\/p>\n<p>IP Address is not resolved for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span class=\"badge badge-pill badge-danger\" style=\"background: #ba6204; color: #fff;\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p>{% endif %}<\/p>\n<p><strong>Closed Alert as True Positive<\/strong><\/p>",
                     "records": "{{vars.alertIRI}}",
                     "parentstepid": "\/api\/3\/workflow_steps\/f7248c0e-cf81-49d5-818f-c85d7324be70"
                 },
@@ -246,7 +248,9 @@
                     "__link": {
                         "recordTags": []
                     },
-                    "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232"
+                    "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232",
+                    "closureNotes": "<p>{% if vars.steps.Resolved_Potentially_Squatting_Domain_Name.data.dnsRecords | length %}<\/p>\n<p>Malicious certificate and website brand found, for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span class=\"badge badge-pill badge-danger\" style=\"background: #ba6204; color: #fff;\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p>{% else %}<\/p>\n<p>IP Address is not resolved for the Potentially Squatting domain and hence {{vars.alertSourceData.similar_domain}} is <strong><span class=\"badge badge-pill badge-danger\" style=\"background: #ba6204; color: #fff;\"><strong>Typo Squatting Domain<\/strong><\/span><\/strong><\/p>\n<p>{% endif %}<\/p>",
+                    "closureReason": "\/api\/3\/picklists\/2ab3e8e9-8cd9-4641-8400-a18a4e8a2da8"
                 },
                 "_showJson": false,
                 "operation": "Overwrite",
