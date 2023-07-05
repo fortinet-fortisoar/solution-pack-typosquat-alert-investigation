@@ -19,7 +19,7 @@
             "minVersion": null
         }
     ],
-    "prerequisite": "- Configure the \"Fortinet FortiRecon Brand Protection\" connectors to get high risk typo domain alerts\n- Configure the \"Whois Freaks\" connector to get DNS lookup and whois information of Domain\n- Configure the \"Whois XML API\" connectors to get Domain and Sub-Domain information \n- Configure the \"Censys\" connector to get domain certificate\n- Configure the \"URLScan.io\" connector to check website brand",
+    "prerequisite": "- Configure the \"Fortinet FortiRecon Brand Protection\" connector to get high risk typo domain alerts\n- Configure the \"Whois Freaks\" connector to get DNS lookup and whois information of Domain\n- Configure the \"Whois XML API\" connector to get Domain and Sub-Domain information \n- Configure the \"Censys\" connector to get domain certificates\n- Configure the \"URLScan.io\" connector to check website brand",
     "publisher": "Fortinet",
     "certified": "false",
     "description": "This FortiSOAR Solution Pack for \"Typosquat Alert Investigation\" offering helps customers to readily orchestrate the investigation and alerting of brand impersonation scenarios \"Typo Squatted Domains\" discovered by FortiRecon.",
@@ -27,7 +27,7 @@
     "category": [
         "Threat Intelligence"
     ],
-    "supportInfo": "Fortinet Customer Support",
+    "supportInfo": null,
     "iconLarge": null,
     "postInstallConfig": null,
     "recordTags": [
