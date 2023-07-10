@@ -3,7 +3,7 @@
         "@type": "Scenario",
         "configuration": null,
         "title": "Typo Squatting Domain Detected",
-        "description": "FortiRecon Brand Protection detects a typo squatted domain whose severity score is **High** <br>\nObserve the following\n\n* Reported Information (Typo Domain, Original Domain, Severity Score and Status) is presented as a handy reference\n* On receiving information from FortiRecon related to Typo Squatting possibility, High Risk Typo Domain Response Playbook activates and creates manual tasks to raise typo domain takedown request.",
+        "description": "FortiRecon Brand Protection detects a typo squatted domain whose severity score is **High** <br>\nObserve the following\n\n* The demo alert created is an example of Typo Squat Alert Investigation detecting a typo domain that is Highly Suspicious\n* The alert is of type Phishing\n* The reported alert contains the following information:\n    - Typo Domain\n    - Original Domain\n    - Severity Score\n    - Status\n    - Source\n    - Source ID\n    - Source IP\n* Indicators are created for monitored domain, typo domain and Source IP Address\n* The response playbook Investigate High Risk Typo Squatting Domain Response runs by selecting the Typo Squat alert record. Below are the flowchart of the this playbook",
         "steps": {
             "Steps": [
                 {
@@ -20,8 +20,8 @@
         "uuid": "a269ba67-5a68-412b-adac-31b4d3991ae1",
         "createUser": "\/api\/3\/people\/3451141c-bac6-467c-8d72-85e0fab569ce",
         "createDate": 1675078960.466311,
-        "modifyUser": "\/api\/3\/appliances\/57545210-2adc-472b-a24f-2df6ee8dfe63",
-        "modifyDate": 1688376931.607544,
+        "modifyUser": "\/api\/3\/people\/3451141c-bac6-467c-8d72-85e0fab569ce",
+        "modifyDate": 1688965301.162706,
         "id": 1,
         "recordTags": [
             "FortiRecon",
