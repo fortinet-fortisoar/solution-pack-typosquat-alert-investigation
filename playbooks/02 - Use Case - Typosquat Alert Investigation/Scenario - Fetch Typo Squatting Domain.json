@@ -20,7 +20,7 @@
             "name": "Configuration",
             "description": null,
             "arguments": {
-                "useMockOutput": "{{globalVars.Demo_mode}}",
+                "typo_domain_alerts": "{\n  \"data\": {\n    \"hits\": [\n      {\n        \"dns_a\": \"199.34.228.168\",\n        \"dns_screenshot\": \"log-in-outlook.com.jpg\",\n        \"fuzzer\": \"original*\",\n        \"id\": \"b8c84a15-cd44-48ee-abbb-00904d21b066\",\n        \"is_checked\": false,\n        \"is_moniter\": false,\n        \"keyword\": \"outlook\",\n        \"original_domain\": \"outlook.com\",\n        \"score\": 87,\n        \"similar_domain\": \"log-in-outlook.com\",\n        \"status\": \"Online\",\n        \"suspicious_category\": \"\",\n        \"suspicious_kayword\": null,\n        \"suspicious_status\": \"Critical\",\n        \"ticket_id\": \"6NDFONF4\",\n        \"whoiser_created_date\": \"2022-01-25T00:00:00Z\"\n      },\n      {\n        \"dns_a\": \"99.83.154.118\",\n        \"dns_screenshot\": \"acmedemouat.com.jpg\",\n        \"fuzzer\": \"original*\",\n        \"id\": \"c8c84a15-cd44-48ee-abbb-00904d21b088\",\n        \"is_checked\": false,\n        \"is_moniter\": false,\n        \"keyword\": \"acmedemo\",\n        \"original_domain\": \"acmedemo.com\",\n        \"score\": 88,\n        \"similar_domain\": \"acmedemoshop.com\",\n        \"status\": \"Offline\",\n        \"suspicious_category\": \"\",\n        \"suspicious_kayword\": null,\n        \"suspicious_status\": \"Critical\",\n        \"ticket_id\": \"6NDFONF5\",\n        \"whoiser_created_date\": \"2022-01-25T00:00:00Z\"\n      },\n      {\n        \"dns_a\": \"52.50.167.226\",\n        \"dns_screenshot\": \"microsoft-2022.online.jpg\",\n        \"fuzzer\": \"original*\",\n        \"id\": \"d8c84a15-cd44-48ee-abbb-00904d31b066\",\n        \"is_checked\": false,\n        \"is_moniter\": false,\n        \"keyword\": \"microsoft\",\n        \"original_domain\": \"microsoft.com\",\n        \"score\": 67,\n        \"similar_domain\": \"microsoft-2022.online\",\n        \"status\": \"Online\",\n        \"suspicious_category\": \"\",\n        \"suspicious_kayword\": null,\n        \"suspicious_status\": \"High\",\n        \"ticket_id\": \"6NDFONF6\",\n        \"whoiser_created_date\": \"2022-01-25T00:00:00Z\"\n      }\n    ],\n    \"page\": 1,\n    \"size\": 10,\n    \"total\": 191\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"1 seconds 527 ms\"\n}",
                 "createdAlertsIRIList": "[]"
             },
             "status": null,
@@ -36,7 +36,7 @@
             "description": null,
             "arguments": {
                 "for_each": {
-                    "item": "{{vars.steps.Fetch_Typo_Domain.data.hits}}",
+                    "item": "{{vars.typo_domain_alerts.data.hits}}",
                     "parallel": false,
                     "condition": ""
                 },
@@ -50,47 +50,11 @@
                 "workflowReference": "\/api\/3\/workflows\/24c9c561-c291-45f9-90fe-72c566d26452"
             },
             "status": null,
-            "top": "435",
+            "top": "300",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/74932bdc-b8b6-4d24-88c4-1a4dfbc524f3",
             "group": null,
             "uuid": "7e1911ba-6013-4a03-afb8-338eccd56d6b"
-        },
-        {
-            "@type": "WorkflowStep",
-            "name": "Fetch Typo Domain",
-            "description": null,
-            "arguments": {
-                "name": "Fortinet FortiRecon Brand Protection",
-                "config": "609923fa-7b90-4c54-84e8-962b456b6096",
-                "params": {
-                    "page": 1,
-                    "size": 500,
-                    "status": [
-                        "Non-Functional",
-                        "Offline",
-                        "Online"
-                    ],
-                    "keyword": "",
-                    "end_date": "",
-                    "severity": "50to100",
-                    "start_date": "",
-                    "original_domain": ""
-                },
-                "version": "1.0.0",
-                "connector": "fortinet-fortirecon-brand-protection",
-                "operation": "get_typo_domains",
-                "mock_result": "{\n  \"data\": {\n    \"hits\": [\n      {\n        \"dns_a\": \"199.34.228.168\",\n        \"dns_screenshot\": \"log-in-outlook.com.jpg\",\n        \"fuzzer\": \"original*\",\n        \"id\": \"b8c84a15-cd44-48ee-abbb-00904d21b066\",\n        \"is_checked\": false,\n        \"is_moniter\": false,\n        \"keyword\": \"outlook\",\n        \"original_domain\": \"outlook.com\",\n        \"score\": 87,\n        \"similar_domain\": \"log-in-outlook.com\",\n        \"status\": \"Online\",\n        \"suspicious_category\": \"\",\n        \"suspicious_kayword\": null,\n        \"suspicious_status\": \"Critical\",\n        \"ticket_id\": \"6NDFONF4\",\n        \"whoiser_created_date\": \"2022-01-25T00:00:00Z\"\n      },\n      {\n        \"dns_a\": \"99.83.154.118\",\n        \"dns_screenshot\": \"acmedemouat.com.jpg\",\n        \"fuzzer\": \"original*\",\n        \"id\": \"c8c84a15-cd44-48ee-abbb-00904d21b088\",\n        \"is_checked\": false,\n        \"is_moniter\": false,\n        \"keyword\": \"acmedemo\",\n        \"original_domain\": \"acmedemo.com\",\n        \"score\": 88,\n        \"similar_domain\": \"acmedemoshop.com\",\n        \"status\": \"Offline\",\n        \"suspicious_category\": \"\",\n        \"suspicious_kayword\": null,\n        \"suspicious_status\": \"Critical\",\n        \"ticket_id\": \"6NDFONF5\",\n        \"whoiser_created_date\": \"2022-01-25T00:00:00Z\"\n      },\n      {\n        \"dns_a\": \"52.50.167.226\",\n        \"dns_screenshot\": \"microsoft-2022.online.jpg\",\n        \"fuzzer\": \"original*\",\n        \"id\": \"d8c84a15-cd44-48ee-abbb-00904d31b066\",\n        \"is_checked\": false,\n        \"is_moniter\": false,\n        \"keyword\": \"microsoft\",\n        \"original_domain\": \"microsoft.com\",\n        \"score\": 67,\n        \"similar_domain\": \"microsoft-2022.online\",\n        \"status\": \"Online\",\n        \"suspicious_category\": \"\",\n        \"suspicious_kayword\": null,\n        \"suspicious_status\": \"High\",\n        \"ticket_id\": \"6NDFONF6\",\n        \"whoiser_created_date\": \"2022-01-25T00:00:00Z\"\n      }\n    ],\n    \"page\": 1,\n    \"size\": 10,\n    \"total\": 191\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"1 seconds 527 ms\"\n}",
-                "operationTitle": "Get Typo Domains",
-                "pickFromTenant": false,
-                "step_variables": []
-            },
-            "status": null,
-            "top": "300",
-            "left": "125",
-            "stepType": "\/api\/3\/workflow_step_types\/0bfed618-0316-11e7-93ae-92361f002671",
-            "group": null,
-            "uuid": "084511b7-7477-4697-b721-b15cb8ef2d0b"
         },
         {
             "@type": "WorkflowStep",
@@ -100,7 +64,7 @@
                 "@id": "[\"{{vars.steps.Create_Demo_Record[0].alert_iri}}\", \"{{vars.steps.Create_Demo_Record[1].alert_iri}}\", \"{{vars.steps.Create_Demo_Record[2].alert_iri}}\"]"
             },
             "status": null,
-            "top": "570",
+            "top": "435",
             "left": "125",
             "stepType": "\/api\/3\/workflow_step_types\/04d0cf46-b6a8-42c4-8683-60a7eaa69e8f",
             "group": null,
@@ -128,13 +92,13 @@
     "routes": [
         {
             "@type": "WorkflowRoute",
-            "name": "Configuration -> Fetch Typo Domain",
-            "targetStep": "\/api\/3\/workflow_steps\/084511b7-7477-4697-b721-b15cb8ef2d0b",
+            "name": "Configuration -> Create Demo Record",
+            "targetStep": "\/api\/3\/workflow_steps\/7e1911ba-6013-4a03-afb8-338eccd56d6b",
             "sourceStep": "\/api\/3\/workflow_steps\/44aea395-7999-4e31-944f-03d7a860cf6a",
             "label": null,
             "isExecuted": false,
             "group": null,
-            "uuid": "fc358b57-cd27-47f0-9a3c-589aafd2ed93"
+            "uuid": "c789732c-1120-4c25-b33d-6e908e3832f2"
         },
         {
             "@type": "WorkflowRoute",
@@ -145,16 +109,6 @@
             "isExecuted": false,
             "group": null,
             "uuid": "dcba766d-9df1-484e-9acc-e06e28c26234"
-        },
-        {
-            "@type": "WorkflowRoute",
-            "name": "Fetch Typo Domain -> Create Demo Record",
-            "targetStep": "\/api\/3\/workflow_steps\/7e1911ba-6013-4a03-afb8-338eccd56d6b",
-            "sourceStep": "\/api\/3\/workflow_steps\/084511b7-7477-4697-b721-b15cb8ef2d0b",
-            "label": null,
-            "isExecuted": false,
-            "group": null,
-            "uuid": "6f19ff8a-0f2d-4ecf-8bbd-bea0a252a83e"
         },
         {
             "@type": "WorkflowRoute",
