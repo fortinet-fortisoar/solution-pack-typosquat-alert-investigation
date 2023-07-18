@@ -9,27 +9,64 @@ To understand the process FortiSOAR follows to respond to alerts related to typo
 
 ## Scenario &mdash; Typo Squatting Domain Detected
 
-This scenario generates an example alert of Type *Phishing* in FortiSOAR's **Alerts** module.
+This scenario generates following three example alert of Type *Phishing* in FortiSOAR's **Alerts** module:
 
-Navigate to the demo alert and note the following:
+1. **Typo Domain Detected - `microsoft-2022.online`**
 
-- The demo alert created is an example of Typo Squat Alert Investigation detecting a typo domain that is *Highly Suspicious*
-- The alert is of type *Phishing*
-- The reported alert contains the following information:
-    - Typo Domain Details:
-        - Typo Domain
-        - Original Domain
-        - Severity Score
-        - Status
-    - Source
-    - Source ID
-    - Source IP
-    - Indicators are created for monitored domain, typo domain and Source IP Address
+    - The demo alert created is an example of a domain that is *Highly Suspicious*
+    - The alert is of type *Phishing*
+    - The reported alert contains the following information:
+        - **Typo Domain**: `microsoft-2022.online`
+        - **Original Domain**: `microsoft.com`
+        - **Severity Score**: `67`
+        - **Status**: `High`
+        - **Source**: FortiRecon Brand Protection
+        - **Source ID**: `d8c84a15-cd44-48ee-abbb-00904d31b066`
+        - **Source IP**: `52.50.167.226`
+        - Indicators created and associated for:
+            - Monitored domain
+            - Typo domain
+            - Source IP Address
 
-- The response playbook `Investigate High Risk Typo Squatting Domain Response` runs by selecting the Typo Squat alert record. Below are the *flowchart* of the this playbook
+2. **Typo Domain Detected - `acmedemoshop.com`**
+
+    - The demo alert created is an example of a domain that is *Critical*
+    - The alert is of type *Phishing*
+    - The reported alert contains the following information:
+        - **Typo Domain**: `acmedemoshop.com`
+        - **Original Domain**: `acmedemo.com`
+        - **Severity Score**: `88`
+        - **Status**: `Critical`
+        - **Source**: FortiRecon Brand Protection
+        - **Source ID**: `c8c84a15-cd44-48ee-abbb-00904d21b088`
+        - **Source IP**: `99.83.154.118`
+        - Indicators created and associated for:
+            - Monitored domain
+            - Typo domain
+            - Source IP Address
+            - Host
+
+3. **Typo Domain Detected - `log-in-outlook.com`**
+
+    - The demo alert created is an example of a domain that is *Critical*
+    - The alert is of type *Phishing*
+    - The reported alert contains the following information:
+        - **Typo Domain**: `log-in-outlook.com`
+        - **Original Domain**: `outlook.com`
+        - **Severity Score**: `87`
+        - **Status**: `Critical`
+        - **Source**: FortiRecon Brand Protection
+        - **Source ID**: `c7b74a25-cd12-34ff-cdes-17639d21b453`
+        - **Source IP**: `199.34.228.168`
+        - Indicators created and associated for:
+            - Monitored domain
+            - Typo domain
+            - Source IP Address
+
+- The response playbook `Investigate High Risk Typo Squatting Domain Response` runs by selecting the Typo Squat alert record. Below is the playbook's flow:
 
     |![Typo Domain Alert](./res/Typo-Squat-Domain.png)|
     |:---------------------------------------------------:|
 
-| [Installation](./docs/setup.md#installation) | [Configuration](./docs/setup.md#configuration) | [Contents](./docs/contents.md) |
-|--------------------------------------------|----------------------------------------------|------------------------|
+| [Installation](./setup.md#installation) | [Configuration](./setup.md#configuration) | [Contents](./contents.md) |
+|-----------------------------------------|-------------------------------------------|---------------------------|

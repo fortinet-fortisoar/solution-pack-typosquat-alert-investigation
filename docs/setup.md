@@ -6,7 +6,7 @@
 1. To install a solution pack, click **Content Hub** > **Discover**.   
 2. From the list of solution pack that appears, search for and select **Typosquat Alert Investigation**.    
 3. Click the **Typosquat Alert Investigation** solution pack card.   
-4. Click the **Install** button on the bottom to begin the installation.
+4. Click the **Install** button on the lower part of the screen to begin the installation.
 
 ## Prerequisites
 
@@ -32,5 +32,5 @@ For optimal performance of the **Typosquat Alert Investigation** solution pack, 
 - **URLScan.io** connectors to get domain certificate. 
     - To configure and use the *URLScan.io* connector, refer to [*URLScan.io Documentation*](https://docs.fortinet.com/document/fortisoar/1.1.2/urlscan-io/440/urlscan-io-v1-1-2)
 
-| [Usage](./docs/usage.md) | [Contents](./docs/contents.md) |
-|--------------------------------------------|----------------------------------------------|
+| [Usage](./usage.md) | [Contents](./contents.md) |
+|---------------------|---------------------------|
