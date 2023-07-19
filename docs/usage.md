@@ -6,25 +6,27 @@ Typo Squatting uses typographical errors such as missing or extra letters, adjac
 
 ## Response Playbook &mdash; Investigate High Risk Typo Squatting Domain Response
 
-Our comprehensive solution enables effortless investigation orchestration and alert generation for brand impersonation scenarios like Typo Squatted domains discovered by FortiRecon
+This comprehensive solution helps with effortless investigation, orchestration, and alert generation for brand impersonation scenarios like Typo Squatted domains discovered by FortiRecon Brand Protection.
 
 With our solution, you can proactively detect and address impersonation attempts. Seamlessly integrated with FortiRecon, our solution create real-time alerts when typo squatted domains related to your brand are found and investigate that alert.
 
-- The response playbook `Investigate High Risk Typo Squatting Domain Response` runs by selecting the Typo Squat alert record. Below is the playbook's flow:
+- The response playbook **Investigate High Risk Typo Squatting Domain** Response becomes available for execution after selecting the alert record of type Typo Squat. The playbook's flow is as follows:
 
-1.	Identify the potentially squatting domain (Typo Squat domain) and monitored domain (Brand domain)
-2.	Perform Whois lookup for Monitored and potentially squatting domain using WhoisFreaks and WhoisXMLAPI integrations
-3.	Compare Whois information of monitored domain and potentially squatting domain and if both the domain owned by same company then close the Alert as False Positive. 
-4.	If both the domain not owned by same company then resolved the IP address of potentially squatting domain using WhoisFreaks integration 
-5.	Using the resolved IP address investigate the potentially squatting domain certificate ( Censys)  and website brand (URLScan.io) and check potentially squatting domain is malicious?
-6.	If potentially squatting domain is malicious then block them in Email Gateway and create the task to takedown the squatting domain
+1.	Identify the potentially squatting domain (Typo Squat domain) and the monitored domain (Brand domain)
+2.	Perform a Whois lookup on both the monitored and potentially squatting domain using WhoisFreaks and WhoisXMLAPI integrations.
+3.	Compare the Whois information of both the monitored domain and potentially squatting domain and close the alert as False Positive, if both the domains are owned by the same organization. 
+4.	In case, the potentially squatting domain is not owned by the organization, resolve the IP address of the potentially squatting domain using WhoisFreaks integration. 
+5.	Using the resolved IP address investigate the potentially squatting domain's SSL certificate (using Censys), the website's branding (using URLScan.io), and check if the potentially squatting domain is malicious.
+6.	If the potentially squatting domain is found to be malicious, creates a task to take down the squatting domain, and blocks them on the email gateway.
 
     |![Typo Domain Alert](./res/Typo-Squat-Domain.png)|
     |:---------------------------------------------------:|
 
 ## Scenario &mdash; Typo Squatting Domain Detected
 
-This scenario generates following three example alert of Type *Phishing* in FortiSOAR's **Alerts** module:
+This scenario generates following three example alerts of Type *Phishing* in the FortiSOAR's **Alerts** module:
+
+
 
 Refer to [Simulate Scenario documentation](https://github.com/fortinet-fortisoar/solution-pack-soc-simulator/blob/develop/docs/usage.md) to understand how to simulate and reset scenarios.
 
