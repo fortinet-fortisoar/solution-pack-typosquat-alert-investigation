@@ -215,7 +215,7 @@
                 },
                 "resource": {
                     "status": "\/api\/3\/picklists\/fac53e73-8d16-4189-98d5-95fbd1555232",
-                    "closureNotes": "Monitored Domain and Potentially Squatting Domain are owned by the same company \"**{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}**\".",
+                    "closureNotes": "Monitored Domain and Potentially Squatting Domain are owned by the same company **{{vars.steps.Get_Domain_Whois_Lookup.data['registrant_contact'].company}}**.",
                     "closureReason": "\/api\/3\/picklists\/2ab3e8e9-8cd9-4641-8400-a18a4e8a2da8"
                 },
                 "operation": "Append",
@@ -476,7 +476,9 @@
                 "connector": "cyops_utilities",
                 "operation": "json_to_html",
                 "operationTitle": "Utils: Convert JSON into a HTML Table",
-                "step_variables": []
+                "step_variables": {
+                    "whois_similarity": "{% if vars.squatting_domain_whois_info[0]['Domain Registered'] is defined %}<p><strong>Monitored Domain and Potentially Squatting Domain are not similar<\/strong><\/p>{% else %}<p><strong>Similarity between Monitored Domain Vs Potentially Squatting Domain<\/strong><\/p>{{vars.steps.Create_Whois_Compared_Data_HTML_Table.data}}{% endif %}"
+                }
             },
             "status": null,
             "top": "200",
@@ -494,7 +496,7 @@
                     "type": "\/api\/3\/picklists\/ff599189-3eeb-4c86-acb0-a7915e85ac3b",
                     "alerts": "{{vars.alertIRI}}",
                     "people": [],
-                    "content": "<p><strong>Similarity between Monitored Domain Vs Potentially Squatting Domain<\/strong><\/p>\n<p>{{vars.steps.Create_Whois_Compared_Data_HTML_Table.data}}<\/p>",
+                    "content": "<p>{{vars.whois_similarity}}<\/p>",
                     "__replace": "",
                     "isImportant": false,
                     "peopleUpdated": false
@@ -526,9 +528,7 @@
                     "include_domain": "{{vars.alertSourceData.similar_domain.split('.')[0]}}.*",
                     "exclude_domains": "",
                     "include_subdomain": "{{vars.alertSourceData.similar_domain.split('.')[0]}}*,*{{vars.alertSourceData.similar_domain.split('.')[0]}},*{{vars.alertSourceData.similar_domain.split('.')[0]}}*",
-                    "exclude_subdomains": "",
-                    "exclude_search_terms": "",
-                    "include_search_terms": "Include Domain"
+                    "exclude_subdomains": ""
                 },
                 "message": {
                     "tags": [],
@@ -541,9 +541,9 @@
                 },
                 "version": "1.0.0",
                 "connector": "whois-xml-api",
-                "operation": "domain_subdoamin_discovery",
+                "operation": "domain_subdomain_discovery",
                 "mock_result": "{\n  \"data\": {\n    \"domainsList\": [],\n    \"domainsCount\": 0\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"1 seconds 908 ms\"\n}",
-                "operationTitle": "Domain\/Subdoamin Discovery",
+                "operationTitle": "Domain or Subdomain Discovery",
                 "pickFromTenant": false,
                 "step_variables": []
             },
@@ -695,9 +695,7 @@
                     "include_domain": "{{vars.alertSourceData.original_domain.split('.')[0]}}.*",
                     "exclude_domains": "",
                     "include_subdomain": "{{vars.alertSourceData.original_domain.split('.')[0]}}*,*{{vars.alertSourceData.original_domain.split('.')[0]}},*{{vars.alertSourceData.original_domain.split('.')[0]}}*",
-                    "exclude_subdomains": "",
-                    "exclude_search_terms": "",
-                    "include_search_terms": "Include Domain"
+                    "exclude_subdomains": ""
                 },
                 "message": {
                     "tags": [],
@@ -710,9 +708,9 @@
                 },
                 "version": "1.0.0",
                 "connector": "whois-xml-api",
-                "operation": "domain_subdoamin_discovery",
+                "operation": "domain_subdomain_discovery",
                 "mock_result": "{\n  \"data\": {\n    \"domainsList\": [\n      \"{{vars.alertSourceData.original_domain.split('.')[0]}}.{{vars.alertSourceData.original_domain.split('.')[0]}}.ci\",\n      \"{{vars.alertSourceData.original_domain.split('.')[0]}}.{{vars.alertSourceData.original_domain.split('.')[0]}}.com.cm\",\n      \"{{vars.alertSourceData.original_domain.split('.')[0]}}.{{vars.alertSourceData.original_domain.split('.')[0]}}.onl\"\n    ],\n    \"domainsCount\": 3\n  },\n  \"status\": \"Success\",\n  \"message\": \"\",\n  \"operation\": null,\n  \"execution_time\": \"2 seconds 314 ms\"\n}",
-                "operationTitle": "Domain\/Subdoamin Discovery",
+                "operationTitle": "Domain or Subdomain Discovery",
                 "pickFromTenant": false,
                 "step_variables": []
             },

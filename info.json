@@ -23,7 +23,7 @@
     "publisher": "Fortinet",
     "certified": "false",
     "description": "This FortiSOAR Solution Pack for \"Typosquat Alert Investigation\" offering helps customers to readily orchestrate the investigation and alerting of brand impersonation scenarios \"Typo Squatted Domains\" discovered by FortiRecon.",
-    "help": "https://github.com/fortinet-fortisoar/solution-pack-typosquat-alert-investigation/blob/develop/README.md",
+    "help": "https://github.com/fortinet-fortisoar/solution-pack-typosquat-alert-investigation/blob/release/1.0.0/README.md",
     "category": [
         "Threat Intelligence"
     ],
