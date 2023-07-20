@@ -8,9 +8,9 @@ Typo Squatting uses typographical errors such as missing or extra letters, adjac
 
 This comprehensive solution helps with effortless investigation, orchestration, and alert generation for brand impersonation scenarios like Typo Squatted domains discovered by FortiRecon Brand Protection.
 
-With our solution, you can proactively detect and address impersonation attempts. Seamlessly integrated with FortiRecon, our solution create real-time alerts when typo squatted domains related to your brand are found and investigate that alert.
+With this solution pack, you can proactively detect and address impersonation attempts. Seamlessly integrated with FortiRecon Brand Protection, our solution creates real-time alerts and investigates it when typo squatted domains related to your brand are found.
 
-- The response playbook **Investigate High Risk Typo Squatting Domain** Response becomes available for execution after selecting the alert record of type Typo Squat. The playbook's flow is as follows:
+- The response playbook **Investigate High Risk Typo Squatting Domain Response** becomes available for execution after selecting the alert record of type **Typo Squat**. The playbook's flow is as follows:
 
 1.	Identify the potentially squatting domain (Typo Squat domain) and the monitored domain (Brand domain)
 2.	Perform a Whois lookup on both the monitored and potentially squatting domain using WhoisFreaks and WhoisXMLAPI integrations.
@@ -25,8 +25,6 @@ With our solution, you can proactively detect and address impersonation attempts
 ## Scenario &mdash; Typo Squatting Domain Detected
 
 This scenario generates following three example alerts of Type *Phishing* in the FortiSOAR's **Alerts** module:
-
-
 
 Refer to [Simulate Scenario documentation](https://github.com/fortinet-fortisoar/solution-pack-soc-simulator/blob/develop/docs/usage.md) to understand how to simulate and reset scenarios.
 
